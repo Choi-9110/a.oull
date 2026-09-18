@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "title": "A.OULL アウル",
+    "description": "伝統工芸の職人の声で聴くAI音声ドーセント"
+  },
+  "nav": {
+    "home": "ホーム",
+    "crafts": "工芸",
+    "artisans": "職人",
+    "magazine": "マガジン",
+    "more": "その他"
+  },
+  "home": {
+    "searchPlaceholder": "工芸・職人・地域を検索",
+    "sections": {
+      "crafts": "伝統工芸8種",
+      "artisans": "職人紹介",
+      "regions": "地域",
+      "magazine": "マガジン",
+      "about": "A.OULLについて",
+      "contact": "お問い合わせ",
+      "apply": "体験申込"
+    }
+  },
+  "docent": {
+    "tapToListen": "タップして聴く",
+    "play": "再生",
+    "pause": "一時停止",
+    "aiVoice": "AIで生成した音声です"
+  },
+  "cta": {
+    "buy": "購入する",
+    "reserve": "体験を予約"
+  },
+  "common": {
+    "comingSoon": "準備中です"
+  }
+}

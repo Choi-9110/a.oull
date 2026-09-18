@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-lacquer: var(--lacquer);
+  --color-brass: var(--brass);
+  --font-sans: var(--font-sans-stack);
+  --spacing-tabbar: var(--tabbar-height);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg-outer);
+  color: var(--fg);
+  font-family: var(--font-sans-stack);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}

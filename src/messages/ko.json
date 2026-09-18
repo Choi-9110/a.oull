@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "title": "A.OULL 아울",
+    "description": "전통공예 장인의 목소리로 듣는 AI 음성 도슨트"
+  },
+  "nav": {
+    "home": "홈",
+    "crafts": "공예",
+    "artisans": "장인",
+    "magazine": "매거진",
+    "more": "더보기"
+  },
+  "home": {
+    "searchPlaceholder": "공예 종목, 장인, 지역 검색",
+    "sections": {
+      "crafts": "전통공예 8종",
+      "artisans": "장인 소개",
+      "regions": "지역",
+      "magazine": "매거진",
+      "about": "아울 소개",
+      "contact": "문의하기",
+      "apply": "체험 신청"
+    }
+  },
+  "docent": {
+    "tapToListen": "탭해서 듣기",
+    "play": "재생",
+    "pause": "일시정지",
+    "aiVoice": "AI로 생성한 음성입니다"
+  },
+  "cta": {
+    "buy": "구매하기",
+    "reserve": "체험 예약"
+  },
+  "common": {
+    "comingSoon": "준비 중입니다"
+  }
+}

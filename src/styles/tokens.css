@@ -1,0 +1,19 @@
+/* A.OULL 디자인 토큰 (초안) — 사업설명회 포스터 톤 기준. 확정 시 ag_dev_web-designer가 갱신 */
+:root {
+  --bg: #f7f4e9; /* 크림 */
+  --bg-outer: #ece8da; /* 데스크톱에서 모바일 셸 바깥 배경 */
+  --fg: #1c2440; /* 딥 네이비 */
+  --muted: #6b6f7d;
+  --line: #ddd8c6;
+  --accent: #6cc2a5; /* 세이지/민트 포인트 */
+  --lacquer: #2b211c; /* 옻칠 흑갈색 */
+  --brass: #b08d57; /* 두석 황동 */
+
+  --shell-max-width: 480px;
+  --tabbar-height: 64px;
+
+  --font-sans-stack:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Hiragino Sans", "PingFang SC", "Noto Sans KR", "Noto Sans JP",
+    "Noto Sans SC", sans-serif;
+}

@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "title": "A.OULL 阿乌尔",
+    "description": "以传统工艺匠人的声音聆听AI语音导览"
+  },
+  "nav": {
+    "home": "首页",
+    "crafts": "工艺",
+    "artisans": "匠人",
+    "magazine": "杂志",
+    "more": "更多"
+  },
+  "home": {
+    "searchPlaceholder": "搜索工艺、匠人、地区",
+    "sections": {
+      "crafts": "传统工艺8种",
+      "artisans": "匠人介绍",
+      "regions": "地区",
+      "magazine": "杂志",
+      "about": "关于A.OULL",
+      "contact": "联系我们",
+      "apply": "体验报名"
+    }
+  },
+  "docent": {
+    "tapToListen": "点击收听",
+    "play": "播放",
+    "pause": "暂停",
+    "aiVoice": "本语音由AI生成"
+  },
+  "cta": {
+    "buy": "购买",
+    "reserve": "预约体验"
+  },
+  "common": {
+    "comingSoon": "敬请期待"
+  }
+}
