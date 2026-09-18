@@ -4,7 +4,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { LOCALE_NAMES } from "@/components/layout/language-switcher";
 import { routing, type Locale } from "@/i18n/routing";
-import { track } from "@/lib/analytics/track";
+import type { EventType } from "@/lib/analytics/events";
+import { track, type TrackInput } from "@/lib/analytics/track";
 
 export type PlayerTrack = {
   id: string;
@@ -58,29 +59,6 @@ export function DocentPlayer({
     setDocentLocale(pageLocale);
   }
 
-  // QR 진입 감지 + qr_scan_entry 1회 전송
-  useEffect(() => {
-    if (!isQrEntry()) return;
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("qr") ?? "";
-    const key = `qr_scan_entry:${code}:${artisanId}`;
-    try {
-      if (sessionStorage.getItem(key)) return;
-      sessionStorage.setItem(key, "1");
-    } catch {}
-    const ua = navigator.userAgent;
-    track("qr_scan_entry", {
-      qr_code: code,
-      artisan_id: artisanId,
-      locale: pageLocale,
-      device_os: /iphone|ipad/i.test(ua)
-        ? "ios"
-        : /android/i.test(ua)
-          ? "android"
-          : "other",
-    });
-  }, [artisanId, pageLocale]);
-
   useEffect(() => {
     const el = cardRef.current;
     if (!el) return;
@@ -104,21 +82,49 @@ export function DocentPlayer({
     });
   }, [current, artisanName]);
 
-  const send = useCallback(
-    (
-      play_action: "play" | "pause" | "seek" | "complete" | "locale_change",
-      rate?: (typeof MILESTONES)[number],
-    ) => {
+  // ── 행동 데이터 (docs/features.md §2-2) ─────────────────────────
+  const listened = useRef(0); // 현재 트랙·언어에서 실제로 들은 누적 시간(초)
+  const lastPos = useRef(0);
+  const playingRef = useRef(false);
+  const dragFrom = useRef<number | null>(null);
+
+  const emit = useCallback(
+    (type: EventType, extra: TrackInput = {}) => {
       if (!current) return;
-      track("audio_docent_action", {
-        play_action,
-        track_id: current.id,
+      track(type, {
+        artisan: artisanId,
+        track: current.id,
         locale: docentLocale,
-        ...(rate ? { completion_rate: rate } : {}),
+        position: round(audioRef.current?.currentTime ?? 0),
+        listened: round(listened.current),
+        ...extra,
       });
     },
-    [current, docentLocale],
+    [artisanId, current, docentLocale],
   );
+
+  // 재생 중에 페이지를 떠나면(탭 닫기·다른 페이지 이동) 이탈로 기록한다.
+  // 화면만 꺼진 경우(백그라운드 재생)는 이탈이 아니므로 visibilitychange는 쓰지 않는다.
+  const emitRef = useRef(emit);
+  useEffect(() => {
+    emitRef.current = emit;
+  }, [emit]);
+  useEffect(() => {
+    const onLeave = () => {
+      if (playingRef.current) emitRef.current("docent_abandon");
+    };
+    window.addEventListener("pagehide", onLeave);
+    return () => {
+      window.removeEventListener("pagehide", onLeave);
+      onLeave();
+    };
+  }, []);
+
+  const resetListening = () => {
+    listened.current = 0;
+    lastPos.current = 0;
+    reported.current.clear();
+  };
 
   const toggle = async () => {
     const a = audioRef.current;
@@ -126,21 +132,24 @@ export function DocentPlayer({
     if (a.paused) {
       try {
         await a.play();
-        send("play");
+        emit("docent_play");
       } catch {
         // 브라우저가 재생을 막은 경우: 다시 탭하면 된다
       }
     } else {
       a.pause();
-      send("pause");
+      emit("docent_pause");
     }
   };
 
-  const seekBy = (delta: number) => {
+  const seekTo = (to: number) => {
     const a = audioRef.current;
     if (!a) return;
-    a.currentTime = Math.max(0, Math.min(a.duration || duration, a.currentTime + delta));
-    send("seek");
+    const from = a.currentTime;
+    a.currentTime = Math.max(0, Math.min(a.duration || duration, to));
+    lastPos.current = a.currentTime;
+    setTime(a.currentTime);
+    emit("docent_seek", { props: { from: round(from) } });
   };
 
   const playAfterSwitch = (shouldPlay: boolean) =>
@@ -149,6 +158,8 @@ export function DocentPlayer({
     });
 
   const selectTrack = (i: number) => {
+    if (playingRef.current) emit("docent_pause");
+    resetListening();
     setIndex(i);
     setTime(0);
     playAfterSwitch(true);
@@ -157,27 +168,35 @@ export function DocentPlayer({
   const changeLocale = (l: Locale) => {
     if (l === docentLocale) return;
     const wasPlaying = playing;
+    emit("docent_locale", { props: { from: docentLocale, to: l } });
+    resetListening();
     setDocentLocale(l);
     setTime(0);
-    send("locale_change");
     playAfterSwitch(wasPlaying);
   };
 
   const onTimeUpdate = () => {
     const a = audioRef.current;
     if (!a || !current) return;
-    setTime(a.currentTime);
-    const pct = (a.currentTime / (a.duration || duration)) * 100;
+    const now = a.currentTime;
+    const delta = now - lastPos.current;
+    if (playingRef.current && delta > 0 && delta < 1.5) listened.current += delta;
+    lastPos.current = now;
+    setTime(now);
+
+    const pct = (now / (a.duration || duration)) * 100;
     for (const m of MILESTONES) {
       const key = `${current.id}:${docentLocale}:${m}`;
       if (pct >= m - 0.5 && !reported.current.has(key)) {
         reported.current.add(key);
-        send(m === 100 ? "complete" : "play", m);
+        if (m === 100) emit("docent_complete", { progress: 100 });
+        else emit("docent_progress", { progress: m });
       }
     }
   };
 
   const onEnded = () => {
+    playingRef.current = false;
     setPlaying(false);
     if (index < tracks.length - 1) selectTrack(index + 1);
   };
@@ -197,8 +216,14 @@ export function DocentPlayer({
           ref={audioRef}
           src={current.src[docentLocale]}
           preload="metadata"
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
+          onPlay={() => {
+            playingRef.current = true;
+            setPlaying(true);
+          }}
+          onPause={() => {
+            playingRef.current = false;
+            setPlaying(false);
+          }}
           onLoadedMetadata={(e) =>
             setDuration(e.currentTarget.duration || current.durationSec)
           }
@@ -236,12 +261,19 @@ export function DocentPlayer({
               max={duration || 1}
               progress={progress}
               onChange={(v) => {
-                if (audioRef.current) audioRef.current.currentTime = v;
+                if (!audioRef.current) return;
+                dragFrom.current ??= audioRef.current.currentTime;
+                audioRef.current.currentTime = v;
+                lastPos.current = v;
                 setTime(v);
               }}
-              onCommit={() => send("seek")}
+              onCommit={() => {
+                if (dragFrom.current === null) return;
+                emit("docent_seek", { props: { from: round(dragFrom.current) } });
+                dragFrom.current = null;
+              }}
             />
-            <div className="flex justify-between font-en text-sm tracking-[0.04em] text-mukhoe tabular-nums">
+            <div className="flex justify-between font-en text-sm tracking-[0.04em] text-mukhoe lining-nums tabular-nums">
               <span>{fmt(time)}</span>
               <span>{fmt(duration)}</span>
             </div>
@@ -250,10 +282,16 @@ export function DocentPlayer({
 
         <div className="flex items-center justify-between border-t border-jae pt-3">
           <div className="flex items-center">
-            <TextButton label={t("back10")} onClick={() => seekBy(-10)}>
+            <TextButton
+              label={t("back10")}
+              onClick={() => seekTo((audioRef.current?.currentTime ?? 0) - 10)}
+            >
               −10
             </TextButton>
-            <TextButton label={t("forward10")} onClick={() => seekBy(10)}>
+            <TextButton
+              label={t("forward10")}
+              onClick={() => seekTo((audioRef.current?.currentTime ?? 0) + 10)}
+            >
               +10
             </TextButton>
             <TextButton
@@ -300,7 +338,7 @@ export function DocentPlayer({
                     className="flex min-h-12 w-full items-center gap-3 border-b border-jae text-left last:border-b-0"
                   >
                     <span
-                      className={`w-6 font-en text-base tabular-nums ${
+                      className={`w-6 font-en text-base lining-nums tabular-nums ${
                         active && playing ? "text-cheongja-deep" : "text-mukhoe"
                       }`}
                     >
@@ -311,7 +349,7 @@ export function DocentPlayer({
                     >
                       {tr.title}
                     </span>
-                    <span className="font-en text-sm text-mukhoe tabular-nums">
+                    <span className="font-en text-sm text-mukhoe lining-nums tabular-nums">
                       {fmt(tr.durationSec)}
                     </span>
                   </button>
@@ -351,13 +389,16 @@ export function DocentPlayer({
               />
             </div>
           </div>
-          <span className="font-en text-sm text-mukhoe tabular-nums">{fmt(time)}</span>
+          <span className="font-en text-sm text-mukhoe lining-nums tabular-nums">
+            {fmt(time)}
+          </span>
         </div>
       </div>
     </>
   );
 }
 
+const round = (n: number) => Math.round(n * 10) / 10;
 const noopSubscribe = () => () => {};
 const isQrEntry = () => new URLSearchParams(window.location.search).get("src") === "qr";
 
@@ -453,7 +494,7 @@ function TextButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="flex h-12 min-w-12 items-center justify-center font-en text-base text-meok tabular-nums"
+      className="flex h-12 min-w-12 items-center justify-center font-en text-base text-meok lining-nums tabular-nums"
     >
       {children}
     </button>

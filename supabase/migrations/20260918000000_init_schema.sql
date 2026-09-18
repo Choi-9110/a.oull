@@ -1,5 +1,5 @@
 -- A.OULL 초기 스키마
--- 다국어 텍스트: jsonb {"ko": "...", "ja": "...", "zh": "..."} — ko 필수
+-- 다국어 텍스트: jsonb {"ko": "...", "en": "...", "ja": "...", "zh": "..."} — ko 필수
 -- 미디어: storage_path만 저장 (전체 URL 저장 금지, docs/storage-decision.md)
 
 create extension if not exists pg_trgm;
@@ -20,7 +20,7 @@ returns boolean language sql immutable as $$
   select value is not null and jsonb_typeof(value) = 'object' and value ? 'ko'
 $$;
 
-create type public.locale as enum ('ko', 'ja', 'zh');
+create type public.locale as enum ('ko', 'en', 'ja', 'zh');
 create type public.media_kind as enum ('audio', 'image');
 create type public.owner_type as enum ('craft', 'artisan', 'story', 'region', 'post');
 create type public.request_status as enum ('new', 'in_progress', 'done', 'canceled');
@@ -162,7 +162,7 @@ create index artisans_name_trgm on public.artisans using gin ((name::text) gin_t
 create index regions_name_trgm on public.regions using gin ((name::text) gin_trgm_ops);
 
 -- ─────────────────────────────────────────────────────────────
--- 개인정보 (문의 / 체험 예약) — anon은 insert만
+-- 개인정보 (문의) — anon은 insert만
 -- ─────────────────────────────────────────────────────────────
 create table public.inquiries (
   id uuid primary key default gen_random_uuid(),
@@ -176,29 +176,13 @@ create table public.inquiries (
   updated_at timestamptz not null default now()
 );
 
-create table public.reservations (
-  id uuid primary key default gen_random_uuid(),
-  name text not null check (char_length(name) between 1 and 50),
-  phone text not null check (char_length(phone) between 8 and 20),
-  preferred_date date,
-  preferred_time text,
-  party_size int check (party_size between 1 and 50),
-  artisan_id uuid references public.artisans (id) on delete set null,
-  craft_id uuid references public.crafts (id) on delete set null,
-  message text check (char_length(message) <= 2000),
-  locale public.locale not null default 'ko',
-  source text, -- 예: qr, artisan_cta, direct
-  privacy_agreed_at timestamptz not null,
-  status public.request_status not null default 'new',
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
+-- reservations(체험 예약)는 20260919000000_tracking_reservations.sql에서 정의한다 (슬롯·세션 참조)
 
 -- updated_at 트리거
 do $$
 declare t text;
 begin
-  foreach t in array array['regions','crafts','artisans','stories','audio_tracks','posts','qr_codes','inquiries','reservations']
+  foreach t in array array['regions','crafts','artisans','stories','audio_tracks','posts','qr_codes','inquiries']
   loop
     execute format('create trigger %I_updated_at before update on public.%I for each row execute function public.set_updated_at()', t, t);
   end loop;
@@ -217,7 +201,6 @@ alter table public.audio_tracks enable row level security;
 alter table public.posts enable row level security;
 alter table public.qr_codes enable row level security;
 alter table public.inquiries enable row level security;
-alter table public.reservations enable row level security;
 
 -- admins: 본인 행만 조회 (관리자 여부 확인용)
 create policy "admins: self read" on public.admins
@@ -244,7 +227,7 @@ create policy "qr_codes: public read active" on public.qr_codes
 create policy "qr_codes: admin all" on public.qr_codes
   for all to authenticated using (public.is_admin()) with check (public.is_admin());
 
--- 개인정보: 누구나 insert(동의 필수), 조회·수정은 관리자만
+-- 개인정보(문의): 누구나 insert(동의 필수), 조회·수정은 관리자만
 create policy "inquiries: public insert" on public.inquiries
   for insert to anon, authenticated with check (status = 'new');
 create policy "inquiries: admin read" on public.inquiries
@@ -252,12 +235,6 @@ create policy "inquiries: admin read" on public.inquiries
 create policy "inquiries: admin update" on public.inquiries
   for update to authenticated using (public.is_admin()) with check (public.is_admin());
 
-create policy "reservations: public insert" on public.reservations
-  for insert to anon, authenticated with check (status = 'new');
-create policy "reservations: admin read" on public.reservations
-  for select to authenticated using (public.is_admin());
-create policy "reservations: admin update" on public.reservations
-  for update to authenticated using (public.is_admin()) with check (public.is_admin());
 
 -- ─────────────────────────────────────────────────────────────
 -- Storage (STORAGE_DRIVER=supabase 일 때)

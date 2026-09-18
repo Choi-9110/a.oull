@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import { fontVariables } from "../fonts";
 
 export const metadata: Metadata = {
-  title: "A.OULL 관리자",
+  title: { default: "A.OULL 관리자", template: "%s · A.OULL 관리자" },
   robots: { index: false, follow: false },
 };
 
-// F-11 관리자 CMS (한국어 전용). 인증 가드는 로그인 기능 구현 시 추가한다.
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+// F-11 관리자 (한국어 전용, 공개 사이트와 별도 <html>)
+export default function AdminRootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko">
-      <body className="text-fg min-h-dvh bg-white antialiased">{children}</body>
+    <html lang="ko" className={fontVariables}>
+      <body className="min-h-dvh bg-hanji text-meok antialiased">{children}</body>
     </html>
   );
 }

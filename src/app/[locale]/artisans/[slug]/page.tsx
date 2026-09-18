@@ -90,7 +90,7 @@ export default async function ArtisanPage({
         {artisan.stories.map((s, i) => (
           <article key={i} className="flex flex-col gap-2 pt-2">
             <h3 className="font-serif text-base font-semibold">{L(s.title, locale)}</h3>
-            <p className="font-serif text-body-l text-pretty">{L(s.body, locale)}</p>
+            <p className="font-read text-body-l text-pretty">{L(s.body, locale)}</p>
           </article>
         ))}
       </section>
@@ -144,11 +144,7 @@ export default async function ArtisanPage({
 
       {/* 하단 고정 CTA 높이만큼 여백 (탭바는 이 페이지에서 숨김) */}
       <div aria-hidden className="h-[calc(var(--cta-height)-var(--tabbar-height))]" />
-      <StickyCta
-        artisanSlug={artisan.slug}
-        artisanId={artisan.slug}
-        storeUrl={artisan.storeUrl}
-      />
+      <StickyCta artisanSlug={artisan.slug} storeUrl={artisan.storeUrl} />
     </>
   );
 }

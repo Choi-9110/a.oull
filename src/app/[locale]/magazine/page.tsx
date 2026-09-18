@@ -43,7 +43,7 @@ export default async function MagazinePage({ params }: PageProps<"/[locale]/maga
               {L(featured.title, locale)}
             </span>
             <span className="text-body text-mukhoe">{L(featured.excerpt, locale)}</span>
-            <span className="font-en text-[15px] tracking-[0.04em] text-mukhoe">
+            <span className="font-en text-[15px] tracking-[0.04em] text-mukhoe lining-nums">
               {featured.publishedAt.replaceAll("-", ".")} ·{" "}
               {tc("minutes", { n: featured.readMinutes })}
             </span>

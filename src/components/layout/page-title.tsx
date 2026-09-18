@@ -12,7 +12,7 @@ export function PageTitle({
 }) {
   return (
     <div className="flex flex-col gap-2 px-gutter pt-8 pb-6">
-      <p className="font-en text-lg tracking-[0.04em] text-nambit">
+      <p className="font-en text-lg tracking-[0.04em] text-nambit lining-nums">
         {en}
         {count !== undefined && ` ${String(count).padStart(2, "0")}`}
       </p>

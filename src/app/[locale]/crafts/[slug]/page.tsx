@@ -70,7 +70,7 @@ export default async function CraftPage({
       <section className="flex flex-col gap-2.5 px-gutter pt-8">
         <h2 className="font-serif text-[19px] font-semibold">{t("history")}</h2>
         {craft.history.map((p, i) => (
-          <p key={i} className="font-serif text-body-l text-pretty">
+          <p key={i} className="font-read text-body-l text-pretty">
             {L(p, locale)}
           </p>
         ))}
@@ -81,7 +81,7 @@ export default async function CraftPage({
         <ol className="border-t border-jae">
           {craft.techniques.map((s, i) => (
             <li key={i} className="flex gap-4 border-b border-jae py-4">
-              <span className="w-7 font-en text-2xl leading-none text-cheongja">
+              <span className="w-7 font-en text-2xl leading-none text-cheongja lining-nums">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className="flex flex-col gap-1">

@@ -21,6 +21,7 @@ export default async function MorePage({ params }: PageProps<"/[locale]/more">) 
   const { locale: l } = await params;
   const locale = l as Locale;
   setRequestLocale(locale);
+  const tf = await getTranslations({ locale, namespace: "footer" });
   const t = await getTranslations({ locale, namespace: "more" });
   const regions = await getRegions();
 
@@ -53,6 +54,9 @@ export default async function MorePage({ params }: PageProps<"/[locale]/more">) 
         </RowLink>
         <RowLink href="/contact">
           <span className="text-body font-medium">{t("contact")}</span>
+        </RowLink>
+        <RowLink href="/privacy">
+          <span className="text-body font-medium">{tf("privacy")}</span>
         </RowLink>
       </section>
 

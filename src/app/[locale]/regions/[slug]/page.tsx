@@ -56,7 +56,7 @@ export default async function RegionPage({
       />
 
       <div className="flex flex-col gap-2 px-gutter pt-5.5">
-        <p className="font-en text-lg tracking-[0.04em] text-nambit capitalize">
+        <p className="font-en text-lg tracking-[0.04em] text-nambit capitalize lining-nums">
           {region.slug}
         </p>
         <h1 className="font-serif text-[30px] leading-[1.3] font-semibold">
@@ -67,7 +67,7 @@ export default async function RegionPage({
 
       <section className="flex flex-col gap-3 px-gutter pt-6">
         {region.intro.map((p, i) => (
-          <p key={i} className="font-serif text-body-l text-pretty">
+          <p key={i} className="font-read text-body-l text-pretty">
             {L(p, locale)}
           </p>
         ))}

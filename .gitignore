@@ -55,3 +55,6 @@ supabase/.branches
 
 # 원본 기획 문서 (레포가 Public이므로 제외 — 로컬에만 보관)
 docs/rfp/
+
+# 로컬 행동 데이터 로그 (Supabase 연결 전 개발용)
+/.data/

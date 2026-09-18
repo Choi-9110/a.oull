@@ -23,7 +23,9 @@ export default async function ContactPage({ params }: PageProps<"/[locale]/conta
     <>
       <AppHeader backHref="/more" />
       <div className="flex flex-col gap-2 px-gutter pt-8 pb-6">
-        <p className="font-en text-lg tracking-[0.04em] text-nambit">Contact</p>
+        <p className="font-en text-lg tracking-[0.04em] text-nambit lining-nums">
+          Contact
+        </p>
         <h1 className="font-serif text-display font-semibold">{t("title")}</h1>
         <p className="text-caption text-mukhoe">{t("sub")}</p>
       </div>

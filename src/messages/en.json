@@ -1,0 +1,221 @@
+{
+  "meta": {
+    "title": "A.OULL",
+    "description": "An AI audio docent in the voices of Korean master artisans"
+  },
+  "nav": {
+    "home": "Home",
+    "crafts": "Crafts",
+    "artisans": "Artisans",
+    "magazine": "Magazine",
+    "more": "More"
+  },
+  "header": {
+    "back": "Back",
+    "language": "Language"
+  },
+  "common": {
+    "seeAll": "See all",
+    "recruiting": "Artisan to come",
+    "minutes": "{n} min read",
+    "readMore": "Read more",
+    "comingSoon": "Coming soon",
+    "sampleNotice": "Text and images on this screen are samples",
+    "photo": "Artisan at work — photo",
+    "otherArtisans": "Other artisans"
+  },
+  "home": {
+    "heroEyebrow": "TONGYEONG CRAFT MUSEUM",
+    "heroTitle": "Four hundred years in the hands,\nnow in their voices",
+    "heroBody": "A.OULL is a Newritage brand made with master artisans of endangered Korean crafts.",
+    "heroCta": "Listen to the artisans",
+    "searchPlaceholder": "Search by craft, artisan or region",
+    "artisansTitle": "Newly featured artisans",
+    "craftsTitle": "Eight traditional crafts",
+    "craftsSub": "Skills of the hand, carried on in Tongyeong and Masan",
+    "regionsTitle": "Homes of the craft",
+    "magazineTitle": "Magazine",
+    "aboutEyebrow": "NEWRITAGE",
+    "aboutTitle": "Vanishing skills of the hand,\nmade into things for today",
+    "aboutBody": "A.OULL records the stories of master artisans and turns their skills into crafts for everyday life.",
+    "aboutCta": "About A.OULL",
+    "applyCta": "Book a workshop",
+    "contactCta": "Contact"
+  },
+  "craft": {
+    "listTitle": "Eight traditional crafts",
+    "listSub": "Choose a craft to explore its history, techniques and artisans",
+    "history": "History",
+    "technique": "Techniques",
+    "materials": "Materials",
+    "artisans": "Artisans of this craft",
+    "noArtisan": "We are inviting an artisan for this craft. Their story is coming soon.",
+    "relatedMagazine": "Related stories"
+  },
+  "artisan": {
+    "listTitle": "Artisans",
+    "listSub": "In front of the work, in the artisan's own voice",
+    "bio": "Biography",
+    "stories": "Stories from the workshop",
+    "works": "Works",
+    "aboutCraft": "About {craft}",
+    "tracks": "{n} docent tracks"
+  },
+  "docent": {
+    "tapToListen": "Tap to listen",
+    "qrWelcome": "Welcome from the QR code",
+    "qrWelcomeBody": "hear the story of this work in the artisan's voice",
+    "nowPlaying": "Now playing",
+    "play": "Play",
+    "pause": "Pause",
+    "back10": "Back 10 seconds",
+    "forward10": "Forward 10 seconds",
+    "speed": "Playback speed",
+    "language": "Docent language",
+    "trackList": "Docent tracks",
+    "aiVoice": "This audio was generated with AI",
+    "aiVoiceDetail": "Recreated with AI from the artisan's own voice",
+    "close": "Close",
+    "voiceSource": "The artisan's own voice",
+    "badge": "AI audio docent {time}"
+  },
+  "cta": {
+    "buy": "Shop the work",
+    "reserve": "Book a workshop",
+    "buyUnavailable": "Shop coming soon"
+  },
+  "region": {
+    "crafts": "Crafts of this region",
+    "artisans": "Artisans of this region"
+  },
+  "magazine": {
+    "title": "Magazine",
+    "sub": "Stories of artisans, crafts and A.OULL",
+    "relatedArtisan": "Artisan in this story",
+    "moreStories": "More stories"
+  },
+  "search": {
+    "title": "Search",
+    "results": "Results for “{q}”",
+    "empty": "No results",
+    "hint": "Try a craft (e.g. mother-of-pearl), an artisan's name, or a region (e.g. Tongyeong)",
+    "crafts": "Crafts",
+    "artisans": "Artisans",
+    "regions": "Regions"
+  },
+  "more": {
+    "title": "More",
+    "regions": "Regions",
+    "service": "A.OULL",
+    "about": "About A.OULL",
+    "contact": "Contact",
+    "apply": "Book a workshop",
+    "language": "Language"
+  },
+  "about": {
+    "title": "About A.OULL",
+    "eyebrow": "A.OULL",
+    "lead": "A Newritage craft brand made in collaboration with master artisans of endangered Korean traditional crafts",
+    "section1Title": "Newritage",
+    "section1Body": "New and Heritage. We bring old skills out of the museum and into everyday life, remaking them as things you want to use today so the artisans' skills and stories can continue.",
+    "section2Title": "The AI docent project",
+    "section2Body": "Based on oral-history interviews, we recreate each artisan's voice with AI to create a docent. It is offered in Korean, English, Japanese and Chinese, with a QR code beside every work.",
+    "section3Title": "From story to workshop",
+    "section3Body": "After listening, you can book a workshop with the artisan or shop their work."
+  },
+  "form": {
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "contact": "Phone or email",
+    "contactPlaceholder": "Phone / name@example.com",
+    "phone": "Mobile phone",
+    "phonePlaceholder": "010-0000-0000",
+    "message": "Message",
+    "messagePlaceholder": "How can we help?",
+    "privacy": "I agree to the collection and use of personal information (required)",
+    "privacyDetail": "Items: name, contact · Purpose: responding to inquiries and bookings · Retention: 1 year after handling",
+    "required": "Please fill in the required fields",
+    "submit": "Send",
+    "demoNotice": "This is a design preview. Submissions are not actually received.",
+    "success": "Received (demo)"
+  },
+  "contact": {
+    "title": "Contact",
+    "sub": "Collaborations, stockists, group visits — ask us anything"
+  },
+  "apply": {
+    "title": "Book a workshop",
+    "sub": "Make something yourself in the artisan's workshop",
+    "artisan": "Artisan / craft",
+    "artisanPlaceholder": "Please select",
+    "date": "Date",
+    "time": "Time",
+    "timeMorning": "Morning (10:00–12:00)",
+    "timeAfternoon": "Afternoon (14:00–17:00)",
+    "people": "Guests",
+    "note": "Requests",
+    "notePlaceholder": "Anything we should know",
+    "submit": "Request booking"
+  },
+  "footer": {
+    "copyright": "© A.OULL. All rights reserved.",
+    "privacy": "Privacy Policy"
+  },
+  "reserve": {
+    "artisan": "Choose an artisan",
+    "date": "Choose a date",
+    "time": "Choose a time",
+    "party": "Guests",
+    "info": "Your details",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "available": "Available",
+    "closed": "Full",
+    "slot": "{remaining}/{capacity} left",
+    "duration": "About {h} h",
+    "selectDateFirst": "Please choose a date on the calendar first",
+    "noSlots": "No sessions are available right now",
+    "partyMax": "Up to {n} guests per booking",
+    "decrease": "Fewer guests",
+    "increase": "More guests",
+    "people": "{n}",
+    "messageHint": "Please do not include sensitive information such as health details",
+    "submit": "Request booking",
+    "submitting": "Sending…",
+    "doneTitle": "Your booking request has been received",
+    "doneBody": "We will contact you the day before the workshop to confirm.",
+    "doneAnother": "See other workshops",
+    "summaryArtisan": "Artisan",
+    "summaryWhen": "Date & time",
+    "summaryParty": "Guests",
+    "errorINVALID": "Please check the required fields and consents",
+    "errorPHONE": "Please check your phone number (e.g. 010-1234-5678 or +81…)",
+    "errorSLOT_FULL": "Not enough seats left in this session. Please choose another.",
+    "errorSLOT_UNAVAILABLE": "This session cannot be booked. Please choose again.",
+    "weekdayRule": "Saturdays only · no same-day bookings"
+  },
+  "consent": {
+    "title": "Consent to collection and use of personal information (required)",
+    "items": "Items",
+    "purpose": "Purpose",
+    "retention": "Retention",
+    "refuse": "Right to refuse",
+    "reserveItems": "Name, mobile phone number",
+    "reservePurpose": "Taking your booking and confirming attendance the day before",
+    "reserveRetention": "Deleted 30 days after the workshop date",
+    "contactItems": "Name, contact (phone or email)",
+    "contactPurpose": "Reviewing and answering your inquiry",
+    "contactRetention": "1 year after the inquiry is handled",
+    "refuseBody": "You may refuse; however, {service} will not be possible without consent.",
+    "serviceReserve": "booking",
+    "serviceContact": "sending an inquiry",
+    "agree": "I agree to the above",
+    "age14": "I am 14 years of age or older",
+    "age14Hint": "Under 14? Please ask a parent or guardian to book for you",
+    "policyLink": "Privacy policy"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "notice": "This policy is provided in Korean, which is the governing version."
+  }
+}

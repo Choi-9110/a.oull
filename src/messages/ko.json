@@ -158,6 +158,64 @@
     "submit": "체험 신청하기"
   },
   "footer": {
-    "copyright": "© A.OULL. All rights reserved."
+    "copyright": "© A.OULL. All rights reserved.",
+    "privacy": "개인정보 처리방침"
+  },
+  "reserve": {
+    "artisan": "장인 선택",
+    "date": "날짜 선택",
+    "time": "시간 선택",
+    "party": "인원",
+    "info": "예약자 정보",
+    "prevMonth": "이전 달",
+    "nextMonth": "다음 달",
+    "available": "예약 가능",
+    "closed": "마감",
+    "slot": "잔여 {remaining}/{capacity}",
+    "duration": "약 {h}시간",
+    "selectDateFirst": "달력에서 날짜를 먼저 선택해 주세요",
+    "noSlots": "현재 예약 가능한 회차가 없습니다",
+    "partyMax": "1건당 최대 {n}명까지 신청할 수 있습니다",
+    "decrease": "인원 줄이기",
+    "increase": "인원 늘리기",
+    "people": "{n}명",
+    "messageHint": "건강 정보 등 민감한 내용은 적지 말아 주세요",
+    "submit": "예약 신청하기",
+    "submitting": "신청 중…",
+    "doneTitle": "예약 신청이 접수되었습니다",
+    "doneBody": "체험 전날 입력하신 연락처로 참석 확정 연락을 드립니다.",
+    "doneAnother": "다른 체험 보기",
+    "summaryArtisan": "장인",
+    "summaryWhen": "일시",
+    "summaryParty": "인원",
+    "errorINVALID": "필수 항목과 동의 여부를 확인해 주세요",
+    "errorPHONE": "연락처 형식을 확인해 주세요 (예: 010-1234-5678)",
+    "errorSLOT_FULL": "선택한 회차에 남은 자리가 부족합니다. 다른 회차를 선택해 주세요.",
+    "errorSLOT_UNAVAILABLE": "예약할 수 없는 회차입니다. 다시 선택해 주세요.",
+    "weekdayRule": "매주 토요일 운영 · 당일 예약 불가"
+  },
+  "consent": {
+    "title": "개인정보 수집·이용 동의 (필수)",
+    "items": "수집 항목",
+    "purpose": "이용 목적",
+    "retention": "보유 기간",
+    "refuse": "동의 거부 권리",
+    "reserveItems": "이름, 휴대전화번호",
+    "reservePurpose": "체험 예약 접수 및 체험 전날 참석 확정 연락",
+    "reserveRetention": "체험일로부터 30일 후 파기",
+    "contactItems": "이름, 연락처(전화 또는 이메일)",
+    "contactPurpose": "문의 내용 확인 및 답변",
+    "contactRetention": "문의 처리 완료 후 1년",
+    "refuseBody": "동의를 거부할 수 있으며, 거부 시 {service} 이용이 불가합니다.",
+    "serviceReserve": "체험 예약",
+    "serviceContact": "문의 접수",
+    "agree": "위 내용에 동의합니다",
+    "age14": "만 14세 이상입니다",
+    "age14Hint": "만 14세 미만은 보호자가 대신 신청해 주세요",
+    "policyLink": "개인정보 처리방침 보기"
+  },
+  "privacy": {
+    "title": "개인정보 처리방침",
+    "notice": ""
   }
 }

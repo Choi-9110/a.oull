@@ -125,7 +125,7 @@ export async function PostRow({ post, locale }: { post: Post; locale: Locale }) 
         <span className="font-serif text-base leading-snug font-semibold">
           {L(post.title, locale)}
         </span>
-        <span className="font-en text-[15px] tracking-[0.04em] text-mukhoe">
+        <span className="font-en text-[15px] tracking-[0.04em] text-mukhoe lining-nums">
           {post.publishedAt.replaceAll("-", ".")} ·{" "}
           {t("minutes", { n: post.readMinutes })}
         </span>

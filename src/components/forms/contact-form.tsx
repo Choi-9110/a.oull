@@ -3,14 +3,14 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { button } from "@/components/ui/primitives";
-import { Field, PrivacyConsent, TextArea, TextInput } from "./fields";
+import { ConsentBox } from "./consent-box";
+import { Field, TextArea, TextInput } from "./fields";
 
 /**
  * F-07 문의 폼 — 현재는 디자인 확인용(데모). Supabase 연결 시 Server Action으로 inquiries에 저장.
  */
 export function ContactForm() {
   const t = useTranslations("form");
-  const [agreed, setAgreed] = useState(false);
   const [state, setState] = useState<"idle" | "error" | "done">("idle");
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,7 +18,7 @@ export function ContactForm() {
     const form = new FormData(e.currentTarget);
     const ok =
       ["name", "contact", "message"].every((k) => String(form.get(k) ?? "").trim()) &&
-      agreed;
+      form.get("privacy") === "on";
     setState(ok ? "done" : "error");
   };
 
@@ -55,12 +55,7 @@ export function ContactForm() {
         className="hidden"
         aria-hidden
       />
-      <PrivacyConsent
-        label={t("privacy")}
-        detail={t("privacyDetail")}
-        checked={agreed}
-        onChange={setAgreed}
-      />
+      <ConsentBox kind="contact" />
       {state === "error" && (
         <p role="alert" className="text-caption font-bold text-onggi">
           {t("required")}

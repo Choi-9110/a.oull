@@ -5,9 +5,10 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 
 /** 국기 대신 각 언어를 그 언어 자체로 표기한다 (브랜드 키트 04) */
-const SHORT: Record<Locale, string> = { ko: "한", ja: "日", zh: "中" };
+const SHORT: Record<Locale, string> = { ko: "한", en: "EN", ja: "日", zh: "中" };
 export const LOCALE_NAMES: Record<Locale, string> = {
   ko: "한국어",
+  en: "English",
   ja: "日本語",
   zh: "中文",
 };

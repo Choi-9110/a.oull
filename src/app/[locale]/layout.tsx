@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
 import { MobileShell } from "@/components/layout/mobile-shell";
 import { fontVariables } from "../fonts";
 
@@ -41,6 +42,7 @@ export default async function LocaleLayout({
     <html lang={locale} className={fontVariables}>
       <body className="antialiased">
         <NextIntlClientProvider>
+          <AnalyticsProvider />
           <MobileShell>{children}</MobileShell>
         </NextIntlClientProvider>
       </body>

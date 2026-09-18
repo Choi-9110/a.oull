@@ -1,5 +1,6 @@
 import {
   Cormorant_Garamond,
+  Noto_Sans,
   Noto_Sans_JP,
   Noto_Sans_KR,
   Noto_Sans_SC,
@@ -19,6 +20,15 @@ export const cormorant = Cormorant_Garamond({
   weight: ["400", "500", "600"],
   variable: "--font-cormorant",
   display: "swap",
+});
+
+/** 영문 본문·UI (브랜드 키트 02: en = Cormorant 제목 / Noto Sans 본문) */
+export const notoSans = Noto_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-noto-sans",
+  display: "swap",
+  preload: false,
 });
 
 export const notoSansKr = Noto_Sans_KR({
@@ -60,6 +70,7 @@ export const notoSerifSc = Noto_Serif_SC({
 
 export const fontVariables = [
   cormorant,
+  notoSans,
   notoSansKr,
   notoSerifKr,
   notoSansJp,

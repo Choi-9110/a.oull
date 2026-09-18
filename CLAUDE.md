@@ -24,7 +24,7 @@
 4. **QR은 한 번 인쇄하면 못 바꾼다.** 인쇄되는 URL은 slug가 아니라 **불변 코드**(`/q/{code}`)를 쓰고, 코드 → 대상 매핑은 DB에서 관리한다.
 5. **오디오 자동재생은 모바일에서 막힌다.** iOS/Android 모두 소리 있는 자동재생이 차단되므로, QR로 들어오면 "탭해서 듣기" 큰 버튼을 먼저 보여준다. autoplay에 의존하지 않는다.
 6. **비용 최소화.** 인프라는 Supabase + Vercel이다. 미디어 스토리지 결정은 `docs/storage-decision.md`를 따른다. 트래픽이 늘면 비용이 가장 먼저 커지는 곳은 오디오 egress다.
-7. **다국어 3개(ko / ja / zh).** 모든 사용자 노출 텍스트와 오디오는 locale별로 관리한다. 하드코딩된 한국어 문자열을 컴포넌트에 넣지 않는다.
+7. **다국어 4개(ko / en / ja / zh).** 모든 사용자 노출 텍스트와 오디오는 locale별로 관리한다. 하드코딩된 한국어 문자열을 컴포넌트에 넣지 않는다.
 8. **개인정보.** 문의·예약 폼은 이름·연락처를 받으므로 **개인정보 수집·이용 동의 체크박스가 필수**다. 공개 API로 개인정보를 조회할 수 없어야 한다(RLS: insert만 허용).
 9. **AI 음성 고지.** 보이스 클로닝 오디오에는 "AI로 생성한 음성" 표기를 넣는다. 장인 음성 사용 동의서는 운영 측에서 확보한다.
 
@@ -35,7 +35,7 @@
 | 런타임 | Node.js **24 LTS** (`.nvmrc`, nvm-windows로 관리) | Vercel 프로젝트 설정도 Node 24.x |
 | 프레임워크 | Next.js 16 (App Router, Turbopack) + React 19 + TypeScript | RSC, SSG/ISR, Server Actions |
 | 스타일 | Tailwind CSS v4 + shadcn/ui (필요한 것만) | 디자인 토큰은 `src/styles/tokens.css` → `globals.css`의 `@theme` |
-| 다국어 | next-intl v4 | `/[locale]/...` 라우팅, 기본값 `ko`, 설정은 `src/i18n/` |
+| 다국어 | next-intl v4 | `/[locale]/...` 라우팅(ko·en·ja·zh), 기본값 `ko`, 설정은 `src/i18n/` |
 | DB / Auth | Supabase (Postgres + Auth + RLS) | 관리자 로그인만 Auth 사용, 일반 방문자는 비로그인 |
 | 미디어 스토리지 | `docs/storage-decision.md` 참고 | 코드는 `src/lib/storage/` 어댑터를 통해서만 접근 |
 | 호스팅 | Vercel | ⚠️ Hobby는 비상업용 한정. 상업 운영 시 Pro 필요 |
@@ -63,7 +63,7 @@ aoull/
 ├─ src/
 │  ├─ proxy.ts                   # (구 middleware) next-intl locale 협상. /admin, /q, /api 제외
 │  ├─ i18n/                      # routing.ts, request.ts, navigation.ts (Link/redirect 등)
-│  ├─ messages/                  # ko.json, ja.json, zh.json (UI 문구)
+│  ├─ messages/                  # ko.json, en.json, ja.json, zh.json (UI 문구)
 │  ├─ app/
 │  │  ├─ layout.tsx              # 패스스루 (globals.css만 로드)
 │  │  ├─ not-found.tsx           # locale 밖 404
@@ -78,24 +78,30 @@ aoull/
 │  │  │  ├─ magazine/ · [slug]/  # M-01 매거진 목록 · 글
 │  │  │  ├─ about/               # F-06 아울 소개
 │  │  │  ├─ contact/             # F-07 문의
-│  │  │  └─ apply/               # F-08 체험 예약
+│  │  │  ├─ apply/               # F-08 캘린더 예약 (장인→날짜→회차→인원→정보→동의)
+│  │  │  └─ privacy/             # 개인정보 처리방침 (한국어 정본)
 │  │  ├─ q/[code]/route.ts       # F-09 QR 진입 → 장인 페이지로 리다이렉트
-│  │  ├─ admin/                  # F-11 관리자 CMS (ko 전용, 자체 <html>)
-│  │  └─ api/                    # (예정) revalidate, upload-url
+│  │  ├─ admin/                  # 관리자 (ko 전용, 자체 <html>) — login/ + (panel)/ 대시보드·매거진 에디터
+│  │  └─ api/track/              # 행동 데이터 수집 (검증·요청제한 후 저장)
 │  ├─ components/
 │  │  ├─ layout/                 # MobileShell, TabBar, PagePlaceholder
-│  │  └─ ui/ audio/ cta/ search/ forms/
+│  │  ├─ analytics/              # AnalyticsProvider (page_view·page_leave)
+│  │  ├─ reservation/            # 달력·예약 흐름
+│  │  ├─ admin/                  # 로그인 폼, Tiptap 에디터, 글 편집기
+│  │  └─ ui/ audio/ cta/ cards/ forms/
 │  ├─ lib/
 │  │  ├─ supabase/               # public.ts(쿠키X, 정적 조회용) · server.ts · client.ts · admin.ts(secret, 서버 전용) · env.ts
 │  │  ├─ storage/                # 스토리지 어댑터: getPublicUrl, buildAudioPath, buildImagePath
-│  │  ├─ analytics/track.ts      # 퍼널 이벤트 (타입 고정)
+│  │  ├─ analytics/              # events.ts(스키마) · session.ts(익명 세션) · track.ts · store-link.ts(nt_ 파라미터)
+│  │  ├─ reservations/slots.ts   # 회차 계산(KST)·전화번호 정규화
 │  │  └─ i18n/                   # pickLocale(jsonb fallback), negotiateLocale(Accept-Language)
-│  ├─ server/queries/ actions/   # 읽기 쿼리 / Server Actions
+│  ├─ data/fixtures/             # 목업 콘텐츠·체험 일정 (Supabase 연결 전 원본)
+│  ├─ server/                    # queries/(콘텐츠) · actions/(예약·로그인) · analytics/(저장·집계) · reservations/ · auth/
 │  ├─ styles/                    # globals.css, tokens.css
 │  └─ types/database.types.ts    # ⚠️ 현재 수기 작성본 → Supabase 연결 후 pnpm db:types로 교체
 ├─ supabase/
 │  ├─ config.toml
-│  ├─ migrations/                # 20260918000000_init_schema.sql (전체 테이블 + RLS + media 버킷)
+│  ├─ migrations/                # init_schema(콘텐츠·RLS·버킷) + tracking_reservations(세션·이벤트·회차·예약·파기·열람기록)
 │  └─ seed.sql                   # 지역 2 · 종목 8 · 장인 2 · 테스트 QR 2
 ├─ scripts/                      # (예정) generate-qr.ts, encode-audio.sh
 └─ tests/
@@ -105,7 +111,7 @@ aoull/
 
 ## 5. 라우팅 규칙
 
-- 공개 페이지: `/{locale}/...` (`ko` | `ja` | `zh`). `/`로 들어오면 Accept-Language를 보고 locale을 정한다. 판단이 안 되면 `ko`.
+- 공개 페이지: `/{locale}/...` (`ko` | `en` | `ja` | `zh`). `/`로 들어오면 Accept-Language를 보고 locale을 정한다. 판단이 안 되면 `ko`.
 - slug는 영문 소문자 kebab-case를 쓴다(예: `dooseok`, `kim-jinhwan`). 한글 slug는 쓰지 않는다.
 - **QR:** `https://aoull.com/q/{code}` → `qr_codes` 조회 → `/{locale}/artisans/{slug}?src=qr&qr={code}`로 302. `qr_scan_entry` 이벤트는 도착 페이지(클라이언트)에서 보낸다.
 - 매거진: `/{locale}/magazine`, `/{locale}/magazine/{slug}`. 글은 ko 필수, ja/zh는 선택.
@@ -125,10 +131,13 @@ aoull/
 - `admins` (관리자 user_id) + `is_admin()` 함수로 RLS 판별
 - 실제 정의: `supabase/migrations/20260918000000_init_schema.sql`
 - `inquiries`, `reservations`: 개인정보가 들어간다. anon은 insert만 가능하고 select는 admin만 가능
-- 다국어 텍스트는 `jsonb` `{ "ko": "...", "ja": "...", "zh": "..." }` 형태로 저장한다. 번역이 비어 있으면 `ko`로 fallback.
+- 다국어 텍스트는 `jsonb` `{ "ko": "...", "en": "...", "ja": "...", "zh": "..." }` 형태로 저장한다. 번역이 비어 있으면 `ko`로 fallback.
 - DB에는 **스토리지 경로만** 저장하고 전체 URL은 저장하지 않는다(스토리지를 교체할 수 있게).
 
-## 7. 분석 이벤트 (RFP §6 기준)
+## 7. 분석 이벤트 (상세: `docs/features.md` §2)
+
+> 아래 표는 RFP 원안. 실제 이벤트 이름은 `src/lib/analytics/events.ts`의 `EVENT_TYPES`가 기준이다 (session_start, page_view/leave, docent_play/pause/progress/complete/abandon/seek/locale, store_click, reservation_start/submit).
+
 
 | 단계 | 이벤트 | 파라미터 |
 |---|---|---|

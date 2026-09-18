@@ -32,7 +32,15 @@ export async function SiteFooter({ locale }: { locale: Locale }) {
       </nav>
       <div className="mt-10 flex items-end justify-between">
         <span className="wordmark text-lg">A.OULL</span>
-        <span className="text-[11px] text-jae">{tf("copyright")}</span>
+        <span className="flex flex-col items-end gap-1 text-[11px] text-jae">
+          <Link
+            href="/privacy"
+            className="font-bold text-baekja underline underline-offset-2"
+          >
+            {tf("privacy")}
+          </Link>
+          {tf("copyright")}
+        </span>
       </div>
     </footer>
   );

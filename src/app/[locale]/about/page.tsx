@@ -39,14 +39,14 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
         <div className="relative flex flex-col gap-5">
           <p className="wordmark text-[40px] leading-none">A.OULL</p>
           <div className="h-px w-[88px] bg-meok" />
-          <p className="font-serif text-body-l text-nambit">{t("lead")}</p>
+          <p className="font-read text-body-l text-nambit">{t("lead")}</p>
         </div>
       </section>
 
       <ol className="flex flex-col px-gutter pt-4">
         {sections.map((n) => (
           <li key={n} className="flex flex-col gap-2.5 border-b border-jae py-6">
-            <span className="font-en text-[26px] leading-none text-cheongja">
+            <span className="font-en text-[26px] leading-none text-cheongja lining-nums">
               {String(n).padStart(2, "0")}
             </span>
             <h2 className="text-[15px] font-bold">{t(`section${n}Title`)}</h2>

@@ -43,32 +43,3 @@ export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
     />
   );
 }
-
-export function PrivacyConsent({
-  label,
-  detail,
-  checked,
-  onChange,
-}: {
-  label: string;
-  detail: string;
-  checked: boolean;
-  onChange: (v: boolean) => void;
-}) {
-  const id = useId();
-  return (
-    <div className="flex flex-col gap-2 rounded-card bg-hanji p-4">
-      <label htmlFor={id} className="flex min-h-12 cursor-pointer items-center gap-3">
-        <input
-          id={id}
-          type="checkbox"
-          checked={checked}
-          onChange={(e) => onChange(e.target.checked)}
-          className="size-5 shrink-0 accent-meok"
-        />
-        <span className="text-body font-medium">{label}</span>
-      </label>
-      <p className="text-label leading-relaxed text-mukhoe">{detail}</p>
-    </div>
-  );
-}

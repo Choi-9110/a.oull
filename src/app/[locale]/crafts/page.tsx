@@ -52,7 +52,7 @@ export default async function CraftsPage({ params }: PageProps<"/[locale]/crafts
                 }
               >
                 <span className="flex items-baseline gap-4">
-                  <span className="w-6 font-en text-lg text-mukhoe tabular-nums">
+                  <span className="w-6 font-en text-lg text-mukhoe lining-nums tabular-nums">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="flex flex-col gap-0.5">

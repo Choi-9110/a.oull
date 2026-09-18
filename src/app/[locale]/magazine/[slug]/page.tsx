@@ -62,7 +62,7 @@ export default async function PostPage({
         <h1 className="font-serif text-[27px] leading-[1.45] font-semibold">
           {L(post.title, locale)}
         </h1>
-        <p className="font-en text-[15px] tracking-[0.04em] text-mukhoe">
+        <p className="font-en text-[15px] tracking-[0.04em] text-mukhoe lining-nums">
           {post.publishedAt.replaceAll("-", ".")} ·{" "}
           {tc("minutes", { n: post.readMinutes })}
         </p>
@@ -78,7 +78,7 @@ export default async function PostPage({
           {L(post.excerpt, locale)}
         </p>
         {post.body.map((p, i) => (
-          <p key={i} className="font-serif text-body-l text-pretty">
+          <p key={i} className="font-read text-body-l text-pretty">
             {L(p, locale)}
           </p>
         ))}

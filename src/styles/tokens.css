@@ -38,10 +38,21 @@
   --font-sans-stack:
     var(--font-noto-sans-kr), "Noto Sans KR", "Malgun Gothic", sans-serif;
   --font-en-stack: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  /* 읽는 글(장인 이야기·본문) — CJK는 세리프, 영문은 산세리프 (Cormorant는 작은 크기에서 가늘어진다) */
+  --font-read-stack: var(--font-serif-stack);
   --leading-read: 1.85;
 }
 
+html[lang="en"] {
+  /* 브랜드 키트 02: 영문 제목 = Cormorant Garamond, 본문·UI = Noto Sans */
+  --font-serif-stack: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans-stack: var(--font-noto-sans), "Noto Sans", system-ui, sans-serif;
+  --font-read-stack: var(--font-sans-stack);
+  --leading-read: 1.75;
+}
+
 html[lang="ja"] {
+  --font-read-stack: var(--font-serif-stack);
   --font-serif-stack:
     var(--font-noto-serif-jp), "Noto Serif JP", "Hiragino Mincho ProN", serif;
   --font-sans-stack:
@@ -50,6 +61,7 @@ html[lang="ja"] {
 }
 
 html[lang="zh"] {
+  --font-read-stack: var(--font-serif-stack);
   --font-serif-stack: var(--font-noto-serif-sc), "Noto Serif SC", "Songti SC", serif;
   --font-sans-stack: var(--font-noto-sans-sc), "Noto Sans SC", "PingFang SC", sans-serif;
   --leading-read: 1.9;

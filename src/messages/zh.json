@@ -158,6 +158,64 @@
     "submit": "提交体验报名"
   },
   "footer": {
-    "copyright": "© A.OULL. All rights reserved."
+    "copyright": "© A.OULL. All rights reserved.",
+    "privacy": "个人信息处理方针"
+  },
+  "reserve": {
+    "artisan": "选择匠人",
+    "date": "选择日期",
+    "time": "选择时间",
+    "party": "人数",
+    "info": "预约人信息",
+    "prevMonth": "上个月",
+    "nextMonth": "下个月",
+    "available": "可预约",
+    "closed": "已满",
+    "slot": "剩余 {remaining}/{capacity}",
+    "duration": "约{h}小时",
+    "selectDateFirst": "请先在日历中选择日期",
+    "noSlots": "目前没有可预约的场次",
+    "partyMax": "每次预约最多{n}人",
+    "decrease": "减少人数",
+    "increase": "增加人数",
+    "people": "{n}人",
+    "messageHint": "请勿填写健康信息等敏感内容",
+    "submit": "提交预约",
+    "submitting": "提交中…",
+    "doneTitle": "已收到您的预约申请",
+    "doneBody": "体验前一天，我们会通过您填写的联系方式确认是否参加。",
+    "doneAnother": "查看其他体验",
+    "summaryArtisan": "匠人",
+    "summaryWhen": "时间",
+    "summaryParty": "人数",
+    "errorINVALID": "请确认必填项及同意事项",
+    "errorPHONE": "请确认电话号码格式（例：+86…）",
+    "errorSLOT_FULL": "所选场次剩余名额不足，请选择其他场次。",
+    "errorSLOT_UNAVAILABLE": "该场次无法预约，请重新选择。",
+    "weekdayRule": "仅每周六开放 · 不接受当日预约"
+  },
+  "consent": {
+    "title": "同意收集和使用个人信息（必选）",
+    "items": "收集项目",
+    "purpose": "使用目的",
+    "retention": "保存期限",
+    "refuse": "拒绝同意的权利",
+    "reserveItems": "姓名、手机号码",
+    "reservePurpose": "受理体验预约及体验前一天确认是否参加",
+    "reserveRetention": "体验日起30天后销毁",
+    "contactItems": "姓名、联系方式（电话或邮箱）",
+    "contactPurpose": "确认并回复咨询内容",
+    "contactRetention": "处理完成后1年",
+    "refuseBody": "您可以拒绝同意，但拒绝后将无法{service}。",
+    "serviceReserve": "预约体验",
+    "serviceContact": "提交咨询",
+    "agree": "同意以上内容",
+    "age14": "我已年满14周岁",
+    "age14Hint": "未满14周岁请由监护人代为申请",
+    "policyLink": "个人信息处理方针"
+  },
+  "privacy": {
+    "title": "个人信息处理方针",
+    "notice": "本方针以韩文版为准。"
   }
 }

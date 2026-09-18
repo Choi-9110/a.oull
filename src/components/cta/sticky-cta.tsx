@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { button } from "@/components/ui/primitives";
 import { Link } from "@/i18n/navigation";
+import { withStoreTracking } from "@/lib/analytics/store-link";
 import { track } from "@/lib/analytics/track";
 
 /**
@@ -12,30 +13,25 @@ import { track } from "@/lib/analytics/track";
  */
 export function StickyCta({
   artisanSlug,
-  artisanId,
   storeUrl,
 }: {
   artisanSlug: string;
-  artisanId: string;
   storeUrl: string | null;
 }) {
   const t = useTranslations("cta");
-  const utm = () =>
-    new URLSearchParams(window.location.search).get("utm_source") ?? undefined;
 
   return (
     <div className="pb-safe fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-[var(--shell-max-width)] border-t border-jae bg-onggi-pale shadow-[0_-6px_18px_rgba(22,40,60,0.06)]">
       <div className="flex h-cta items-center gap-2.5 px-gutter">
         {storeUrl ? (
           <a
-            href={storeUrl}
+            href={withStoreTracking(storeUrl, artisanSlug)}
             target="_blank"
             rel="noopener"
-            onClick={() =>
-              track("conversion_cta_click", {
-                cta_type: "buy_store",
-                artisan_id: artisanId,
-                utm_source: utm(),
+            onClick={(e) =>
+              track("store_click", {
+                artisan: artisanSlug,
+                props: { url: e.currentTarget.href },
               })
             }
             className={`${button.base} ${button.primary} flex-1 px-0`}
@@ -50,10 +46,9 @@ export function StickyCta({
         <Link
           href={{ pathname: "/apply", query: { artisan: artisanSlug } }}
           onClick={() =>
-            track("conversion_cta_click", {
-              cta_type: "reservation",
-              artisan_id: artisanId,
-              utm_source: utm(),
+            track("reservation_start", {
+              artisan: artisanSlug,
+              props: { from: "artisan_cta" },
             })
           }
           className={`${button.base} ${button.secondary} flex-1 px-0`}
