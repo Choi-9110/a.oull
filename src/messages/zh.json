@@ -12,7 +12,8 @@
   },
   "header": {
     "back": "返回",
-    "language": "语言"
+    "language": "语言",
+    "close": "关闭"
   },
   "common": {
     "seeAll": "查看全部",
@@ -77,7 +78,8 @@
     "aiVoiceDetail": "以AI复刻匠人本人的声音制作",
     "close": "关闭",
     "voiceSource": "匠人本人的声音",
-    "badge": "AI语音导览 {time}"
+    "badge": "AI语音导览 {time}",
+    "languageSheet": "要用哪种语言收听？"
   },
   "cta": {
     "buy": "购买作品",
@@ -135,9 +137,13 @@
     "privacy": "同意收集和使用个人信息（必选）",
     "privacyDetail": "收集项目：姓名、联系方式 · 目的：咨询及预约回复 · 保存期限：处理完成后1年",
     "required": "请填写必填项",
-    "submit": "提交",
+    "submit": "提交咨询",
     "demoNotice": "当前为设计确认页面，不会实际受理。",
-    "success": "已提交（演示）"
+    "success": "已提交（演示）",
+    "nameError": "请输入姓名",
+    "phoneError": "请确认手机号码",
+    "contactError": "请输入电话或邮箱",
+    "messageError": "请输入咨询内容"
   },
   "contact": {
     "title": "联系我们",
@@ -190,9 +196,18 @@
     "summaryParty": "人数",
     "errorINVALID": "请确认必填项及同意事项",
     "errorPHONE": "请确认电话号码格式（例：+86…）",
-    "errorSLOT_FULL": "所选场次剩余名额不足，请选择其他场次。",
+    "errorSLOT_FULL": "该场次刚刚约满，请选择其他场次。",
     "errorSLOT_UNAVAILABLE": "该场次无法预约，请重新选择。",
-    "weekdayRule": "仅每周六开放 · 不接受当日预约"
+    "weekdayRule": "仅每周六开放 · 不接受当日预约",
+    "step1": "想和哪位匠人一起体验？",
+    "step2": "打算什么时候来？",
+    "step3": "一共几位？",
+    "step4": "请填写预约人信息",
+    "step4Sub": "仅用于体验前一天确认是否参加",
+    "next": "下一步",
+    "progress": "第{n}步，共{total}步",
+    "timeTitle": "时间",
+    "edit": "修改"
   },
   "consent": {
     "title": "同意收集和使用个人信息（必选）",
@@ -212,7 +227,13 @@
     "agree": "同意以上内容",
     "age14": "我已年满14周岁",
     "age14Hint": "未满14周岁请由监护人代为申请",
-    "policyLink": "个人信息处理方针"
+    "policyLink": "个人信息处理方针",
+    "all": "全部同意",
+    "requiredTag": "[必选]",
+    "privacyRow": "同意收集和使用个人信息",
+    "view": "查看",
+    "hide": "收起",
+    "error": "请同意必选项"
   },
   "privacy": {
     "title": "个人信息处理方针",

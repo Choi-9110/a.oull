@@ -20,7 +20,7 @@ export function CraftTile({
   return (
     <Link
       href={`/crafts/${craft.slug}`}
-      className="flex min-h-[72px] flex-col gap-1 rounded-card bg-hanji p-3.5"
+      className="tap flex min-h-[72px] flex-col gap-1 rounded-card bg-hanji p-3.5"
     >
       <span className="font-serif text-base font-semibold">{L(craft.name, locale)}</span>
       <span className="text-label text-mukhoe">
@@ -48,7 +48,7 @@ export async function ArtisanRow({
   return (
     <Link
       href={`/artisans/${artisan.slug}`}
-      className="flex items-center gap-3.5 border-t border-jae py-3.5"
+      className="tap-row flex items-center gap-3.5 border-t border-jae py-3.5"
     >
       <PhotoPlaceholder
         label={tc("photo")}
@@ -88,7 +88,7 @@ export async function ArtisanCard({
   return (
     <Link
       href={`/artisans/${artisan.slug}`}
-      className="block overflow-hidden rounded-card bg-hanji"
+      className="tap block overflow-hidden rounded-card bg-hanji"
     >
       <PhotoPlaceholder
         label={`${tc("photo")} — 16:10`}
@@ -118,7 +118,7 @@ export async function PostRow({ post, locale }: { post: Post; locale: Locale }) 
   return (
     <Link
       href={`/magazine/${post.slug}`}
-      className="flex gap-3.5 border-t border-jae py-4"
+      className="tap-row flex gap-3.5 border-t border-jae py-4"
     >
       <span className="flex min-w-0 flex-1 flex-col gap-1.5">
         <span className="label">{L(post.category, locale)}</span>

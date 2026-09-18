@@ -49,7 +49,7 @@ export default async function RegionPage({
 
   return (
     <>
-      <AppHeader backHref="/more" />
+      <AppHeader backHref="/more" title={L(region.name, locale)} titleOnScroll />
       <PhotoPlaceholder
         label={`${tc("photo")} — 16:10`}
         className="aspect-[16/10] w-full"

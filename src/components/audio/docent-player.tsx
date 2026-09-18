@@ -2,7 +2,9 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { Check, ChevronDown, Globe } from "lucide-react";
 import { LOCALE_NAMES } from "@/components/layout/language-switcher";
+import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { routing, type Locale } from "@/i18n/routing";
 import type { EventType } from "@/lib/analytics/events";
 import { track, type TrackInput } from "@/lib/analytics/track";
@@ -50,6 +52,7 @@ export function DocentPlayer({
   const fromQr = useSyncExternalStore(noopSubscribe, isQrEntry, () => false);
   const [prevPageLocale, setPrevPageLocale] = useState(pageLocale);
   const [cardVisible, setCardVisible] = useState(true);
+  const [langOpen, setLangOpen] = useState(false);
 
   const current = tracks[index];
 
@@ -303,26 +306,16 @@ export function DocentPlayer({
               {speed}×
             </TextButton>
           </div>
-          <div
-            role="group"
-            aria-label={t("language")}
-            className="flex overflow-hidden rounded-btn border border-meok"
+          <button
+            type="button"
+            onClick={() => setLangOpen(true)}
+            aria-label={`${t("language")}: ${LOCALE_NAMES[docentLocale]}`}
+            className="tap flex h-11 items-center gap-1.5 rounded-btn border border-meok px-3 text-sm font-bold"
           >
-            {routing.locales.map((l, i) => (
-              <button
-                key={l}
-                type="button"
-                lang={l}
-                onClick={() => changeLocale(l)}
-                aria-pressed={l === docentLocale}
-                className={`h-9 px-2.5 text-label ${i ? "border-l border-meok" : ""} ${
-                  l === docentLocale ? "bg-meok font-bold text-baekja" : "text-meok"
-                }`}
-              >
-                {LOCALE_NAMES[l]}
-              </button>
-            ))}
-          </div>
+            <Globe size={16} strokeWidth={1.6} aria-hidden />
+            {LOCALE_NAMES[docentLocale]}
+            <ChevronDown size={16} strokeWidth={1.6} aria-hidden />
+          </button>
         </div>
 
         {tracks.length > 1 && (
@@ -361,6 +354,36 @@ export function DocentPlayer({
 
         <p className="text-[11px] text-mukhoe">※ {t("aiVoice")}</p>
       </section>
+
+      <BottomSheet
+        open={langOpen}
+        onClose={() => setLangOpen(false)}
+        title={t("languageSheet")}
+        closeLabel={t("close")}
+      >
+        <ul role="radiogroup" aria-label={t("language")}>
+          {routing.locales.map((l) => (
+            <li key={l}>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={l === docentLocale}
+                lang={l}
+                onClick={() => {
+                  setLangOpen(false);
+                  changeLocale(l);
+                }}
+                className="tap-row flex min-h-14 w-full items-center justify-between border-b border-jae text-left text-body-l"
+              >
+                <span className={l === docentLocale ? "font-bold" : ""}>
+                  {LOCALE_NAMES[l]}
+                </span>
+                {l === docentLocale && <Check size={20} aria-hidden />}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </BottomSheet>
 
       {/* 미니 플레이어: 카드가 화면 밖일 때 CTA 바 바로 위 */}
       <div

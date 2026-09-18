@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Field, Select, TextArea, TextInput } from "@/components/forms/fields";
 import { button, PhotoPlaceholder } from "@/components/ui/primitives";
 import { routing, type Locale } from "@/i18n/routing";
+import { useToast } from "@/components/ui/toast";
 import { RichEditor } from "./rich-editor";
 
 export type PostDraft = {
@@ -49,7 +50,7 @@ export function PostEditor({
   const [html, setHtml] = useState<Partial<Record<Locale, string>>>({});
   const [cover, setCover] = useState<string | null>(null);
   const [preview, setPreview] = useState(false);
-  const [notice, setNotice] = useState<string | null>(null);
+  const toast = useToast();
 
   const current = draft.content[tab];
   const setContent = (patch: Partial<PostDraft["content"][Locale]>) =>
@@ -67,18 +68,18 @@ export function PostEditor({
         `aoull:post-draft:${draft.slug || "new"}`,
         JSON.stringify(draft),
       );
-      setNotice("이 브라우저에 임시 저장했습니다. (데모 모드: 서버에는 저장되지 않음)");
+      toast("이 브라우저에 임시 저장했어요 (데모 모드)");
     } catch {
-      setNotice("임시 저장에 실패했습니다.");
+      toast("임시 저장에 실패했어요", "error");
     }
   };
 
   const publish = () => {
     if (!koReady || !slugValid) {
-      setNotice("한국어 제목과 주소(slug)를 확인해 주세요.");
+      toast("한국어 제목과 주소(slug)를 확인해 주세요", "error");
       return;
     }
-    setNotice("데모 모드라 발행되지 않습니다. Supabase 연결 후 실제로 발행됩니다.");
+    toast("데모 모드라 발행되지 않아요. Supabase 연결 후 발행돼요");
   };
 
   return (
@@ -116,15 +117,6 @@ export function PostEditor({
           </button>
         </div>
       </div>
-
-      {notice && (
-        <p
-          role="status"
-          className="rounded-card border border-jae bg-baekja px-4 py-3 text-caption"
-        >
-          {notice}
-        </p>
-      )}
 
       <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
         {/* 본문 */}

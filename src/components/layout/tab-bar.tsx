@@ -12,8 +12,8 @@ const TABS = [
   { href: "/more", key: "more", Icon: Ellipsis },
 ] as const;
 
-/** 장인 상세에서는 하단 고정 CTA(구매/체험예약)가 탭바 자리를 대신한다. */
-const HIDDEN_ON = /^\/artisans\/[^/]+$/;
+/** 장인 상세(구매·예약 CTA)와 예약·문의 폼(다음·보내기 버튼)에서는 하단 고정 버튼이 탭바 자리를 대신한다. */
+const HIDDEN_ON = /^\/(artisans\/[^/]+|apply|contact)$/;
 
 export function TabBar() {
   const t = useTranslations("nav");
@@ -30,7 +30,7 @@ export function TabBar() {
               <Link
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={`flex h-full flex-col items-center justify-center gap-1 text-[11px] ${
+                className={`tap flex h-full flex-col items-center justify-center gap-1 text-[11px] ${
                   active ? "font-bold text-meok" : "text-mukhoe"
                 }`}
               >

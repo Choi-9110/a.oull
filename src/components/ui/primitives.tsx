@@ -9,7 +9,7 @@ import { Link } from "@/i18n/navigation";
  * - 층은 그림자 대신 한지 면 + 1px 재 보더
  */
 export const button = {
-  base: "inline-flex h-[52px] items-center justify-center gap-2 rounded-btn px-6 text-[15px] font-bold transition-colors",
+  base: "tap inline-flex h-[52px] items-center justify-center gap-2 rounded-btn px-6 text-[15px] font-bold transition-colors",
   primary: "bg-onggi text-baekja hover:bg-onggi-hover",
   secondary: "border border-meok text-meok hover:bg-meok hover:text-baekja",
   solid: "border border-meok bg-meok text-baekja hover:bg-nambit",
@@ -91,7 +91,7 @@ export function RowLink({
   return (
     <Link
       href={href}
-      className="flex min-h-14 items-center gap-3 border-b border-jae py-3"
+      className="tap-row flex min-h-14 items-center gap-3 border-b border-jae py-3"
     >
       <span className="min-w-0 flex-1">{children}</span>
       {aside}

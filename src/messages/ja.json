@@ -12,7 +12,8 @@
   },
   "header": {
     "back": "戻る",
-    "language": "言語"
+    "language": "言語",
+    "close": "閉じる"
   },
   "common": {
     "seeAll": "すべて見る",
@@ -77,7 +78,8 @@
     "aiVoiceDetail": "職人本人の声をAIで再現して制作しました",
     "close": "閉じる",
     "voiceSource": "職人本人の声",
-    "badge": "AI音声ドーセント {time}"
+    "badge": "AI音声ドーセント {time}",
+    "languageSheet": "どの言語で聴きますか？"
   },
   "cta": {
     "buy": "作品を購入",
@@ -135,9 +137,13 @@
     "privacy": "個人情報の収集・利用に同意します（必須）",
     "privacyDetail": "収集項目：氏名、連絡先・目的：お問い合わせ及び予約対応・保有期間：処理完了後1年",
     "required": "必須項目を入力してください",
-    "submit": "送信",
+    "submit": "問い合わせる",
     "demoNotice": "現在はデザイン確認用の画面のため、実際には受け付けられません。",
-    "success": "受け付けました（デモ）"
+    "success": "受け付けました（デモ）",
+    "nameError": "お名前を入力してください",
+    "phoneError": "電話番号をご確認ください",
+    "contactError": "電話番号またはメールを入力してください",
+    "messageError": "お問い合わせ内容を入力してください"
   },
   "contact": {
     "title": "お問い合わせ",
@@ -190,9 +196,18 @@
     "summaryParty": "人数",
     "errorINVALID": "必須項目と同意をご確認ください",
     "errorPHONE": "電話番号の形式をご確認ください（例：+81…）",
-    "errorSLOT_FULL": "選択した回の残席が不足しています。別の回をお選びください。",
+    "errorSLOT_FULL": "ちょうど満席になりました。別の回をお選びください。",
     "errorSLOT_UNAVAILABLE": "予約できない回です。もう一度お選びください。",
-    "weekdayRule": "毎週土曜日のみ・当日予約不可"
+    "weekdayRule": "毎週土曜日のみ・当日予約不可",
+    "step1": "どの職人と体験しますか？",
+    "step2": "いつ来られますか？",
+    "step3": "何名で来られますか？",
+    "step4": "予約者情報を入力してください",
+    "step4Sub": "前日の参加確認のご連絡にのみ使用します",
+    "next": "次へ",
+    "progress": "{total}ステップ中{n}",
+    "timeTitle": "時間",
+    "edit": "変更"
   },
   "consent": {
     "title": "個人情報の収集・利用への同意（必須）",
@@ -212,7 +227,13 @@
     "agree": "上記に同意します",
     "age14": "14歳以上です",
     "age14Hint": "14歳未満の方は保護者の方がお申し込みください",
-    "policyLink": "個人情報処理方針"
+    "policyLink": "個人情報処理方針",
+    "all": "すべてに同意する",
+    "requiredTag": "[必須]",
+    "privacyRow": "個人情報の収集・利用への同意",
+    "view": "表示",
+    "hide": "閉じる",
+    "error": "必須項目に同意してください"
   },
   "privacy": {
     "title": "個人情報処理方針",

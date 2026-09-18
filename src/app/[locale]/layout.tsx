@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
 import { MobileShell } from "@/components/layout/mobile-shell";
+import { ToastProvider } from "@/components/ui/toast";
 import { fontVariables } from "../fonts";
 
 export function generateStaticParams() {
@@ -43,7 +44,9 @@ export default async function LocaleLayout({
       <body className="antialiased">
         <NextIntlClientProvider>
           <AnalyticsProvider />
-          <MobileShell>{children}</MobileShell>
+          <ToastProvider>
+            <MobileShell>{children}</MobileShell>
+          </ToastProvider>
         </NextIntlClientProvider>
       </body>
     </html>

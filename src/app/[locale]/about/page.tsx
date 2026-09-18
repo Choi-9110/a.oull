@@ -25,7 +25,7 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
 
   return (
     <>
-      <AppHeader backHref="/more" />
+      <AppHeader backHref="/more" title={t("title")} />
 
       <section className="relative overflow-hidden border-b border-jae px-gutter pt-12 pb-10">
         <div

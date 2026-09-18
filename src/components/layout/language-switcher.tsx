@@ -1,6 +1,9 @@
 "use client";
 
+import { Check, Globe } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
+import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 
@@ -23,7 +26,56 @@ export function useChangeLocale() {
   };
 }
 
-/** 헤더용 소형 (한 · 日 · 中) */
+/** 하위 화면 헤더용: 지구본 + 현재 언어 → 바텀시트에서 선택 (TDS: 선택지는 시트로) */
+export function LanguageSheetButton() {
+  const t = useTranslations("header");
+  const locale = useLocale() as Locale;
+  const change = useChangeLocale();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label={`${t("language")}: ${LOCALE_NAMES[locale]}`}
+        className="tap flex h-10 items-center gap-1 rounded-btn border border-jae px-2.5 text-label font-bold"
+      >
+        <Globe size={16} strokeWidth={1.6} aria-hidden />
+        {SHORT[locale]}
+      </button>
+      <BottomSheet
+        open={open}
+        onClose={() => setOpen(false)}
+        title={t("language")}
+        closeLabel={t("close")}
+      >
+        <ul role="radiogroup" aria-label={t("language")}>
+          {routing.locales.map((l) => (
+            <li key={l}>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={l === locale}
+                lang={l}
+                onClick={() => {
+                  setOpen(false);
+                  if (l !== locale) change(l);
+                }}
+                className="tap-row flex min-h-14 w-full items-center justify-between border-b border-jae text-left text-body-l"
+              >
+                <span className={l === locale ? "font-bold" : ""}>{LOCALE_NAMES[l]}</span>
+                {l === locale && <Check size={20} className="text-meok" aria-hidden />}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </BottomSheet>
+    </>
+  );
+}
+
+/** 홈·탭 루트 헤더용 (한 · EN · 日 · 中) — 외국인 관람객이 바로 찾을 수 있게 펼쳐 둔다 */
 export function LanguageSwitcher() {
   const t = useTranslations("header");
   const locale = useLocale();

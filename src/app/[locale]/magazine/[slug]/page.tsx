@@ -55,7 +55,7 @@ export default async function PostPage({
 
   return (
     <>
-      <AppHeader backHref="/magazine" />
+      <AppHeader backHref="/magazine" title={L(post.title, locale)} titleOnScroll />
 
       <header className="flex flex-col gap-3 px-gutter pt-8 pb-6">
         <p className="label">{L(post.category, locale)}</p>

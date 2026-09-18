@@ -1,27 +1,36 @@
 "use client";
 
+import { ChevronRight } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   useActionState,
   useEffect,
   useMemo,
+  useRef,
   useState,
   useSyncExternalStore,
 } from "react";
-import { ConsentBox } from "@/components/forms/consent-box";
-import { Field, TextArea, TextInput } from "@/components/forms/fields";
+import { ConsentBox, type ConsentState } from "@/components/forms/consent-box";
+import { BottomCta, Field, TextArea, TextInput } from "@/components/forms/fields";
+import { AppHeader } from "@/components/layout/app-header";
 import { button, TextLink } from "@/components/ui/primitives";
+import { useToast } from "@/components/ui/toast";
 import { peekSessionId } from "@/lib/analytics/session";
 import { track } from "@/lib/analytics/track";
-import type { Slot } from "@/lib/reservations/slots";
+import { formatPhoneInput } from "@/lib/forms/phone";
+import { normalizePhone, type Slot } from "@/lib/reservations/slots";
 import { createReservation, type ReservationState } from "@/server/actions/reservations";
 import { ReservationCalendar } from "./calendar";
 
-export type ArtisanOption = { slug: string; label: string };
+export type ArtisanOption = { slug: string; name: string; craft: string };
+
+type Step = 1 | 2 | 3 | 4;
+const TOTAL = 4;
 
 /**
- * F-08 캘린더 예약 (docs/features.md §3)
- * 장인 → 날짜(정해진 요일만) → 회차(남은 자리) → 인원 → 이름·연락처 → 필수 동의 → 신청
+ * F-08 캘린더 예약 — TDS 퍼널: 한 화면에 한 질문, 하단 고정 "다음", 앞 단계 요약·변경
+ * 1 장인 → 2 날짜·시간 → 3 인원 → 4 예약자 정보·동의 → 완료
+ * 브라우저 뒤로가기는 이전 단계로 돌아간다 (history.state 사용).
  */
 export function ReservationFlow({
   artisans,
@@ -34,9 +43,11 @@ export function ReservationFlow({
 }) {
   const t = useTranslations("reserve");
   const tf = useTranslations("form");
+  const tn = useTranslations("apply");
   const locale = useLocale();
+  const toast = useToast();
 
-  // 장인 페이지 CTA에서 ?artisan= 으로 들어오면 미리 선택 (사용자가 바꾸면 그 값 우선)
+  // 장인 페이지 CTA(?artisan=)로 들어오면 1단계를 건너뛴다
   const preselected = useSyncExternalStore(
     noopSubscribe,
     () => {
@@ -45,18 +56,42 @@ export function ReservationFlow({
     },
     () => null,
   );
+  const firstStep: Step = preselected ? 2 : 1;
   const [pickedArtisan, setPickedArtisan] = useState<string | null>(null);
-  const artisan = pickedArtisan ?? preselected ?? artisans[0]?.slug ?? null;
+  const artisan = pickedArtisan ?? preselected;
+  const [stepState, setStep] = useState<Step | null>(null);
+  const step: Step = stepState ?? firstStep;
 
   const [date, setDate] = useState<string | null>(null);
   const [slotId, setSlotId] = useState<string | null>(null);
   const [party, setParty] = useState(1);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [consent, setConsent] = useState<ConsentState>({ privacy: false, age14: false });
+  const [touched, setTouched] = useState(false);
 
   const [state, formAction, pending] = useActionState<ReservationState, FormData>(
     createReservation,
     { status: "idle" },
   );
 
+  // ── 단계 이동: 브라우저 뒤로가기와 연동 ─────────────────────
+  const goTo = (next: Step) => {
+    window.history.pushState({ ...window.history.state, reserveStep: next }, "");
+    setStep(next);
+    window.scrollTo({ top: 0 });
+  };
+  const back = () => window.history.back();
+  useEffect(() => {
+    const onPop = (e: PopStateEvent) => {
+      const s = (e.state as { reserveStep?: Step } | null)?.reserveStep;
+      setStep(s ?? firstStep);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [firstStep]);
+
+  // ── 파생 값 ─────────────────────────────────────────────
   const artisanSlots = useMemo(
     () => slots.filter((s) => s.artisanSlug === artisan),
     [slots, artisan],
@@ -67,8 +102,9 @@ export function ReservationFlow({
     return map;
   }, [artisanSlots]);
   const daySlots = artisanSlots.filter((s) => s.date === date);
-  const slot = daySlots.find((s) => s.id === slotId) ?? null;
+  const slot = artisanSlots.find((s) => s.id === slotId) ?? null;
   const partyMax = Math.max(1, Math.min(maxPartySize, slot?.remaining ?? maxPartySize));
+  const selectedArtisan = artisans.find((a) => a.slug === artisan);
 
   const fmtDate = useMemo(
     () =>
@@ -80,257 +116,401 @@ export function ReservationFlow({
       }),
     [locale],
   );
+  const whenOf = (s: Slot) =>
+    `${fmtDate.format(new Date(`${s.date}T00:00:00Z`))} ${s.time}`;
 
+  const nameError = touched && !name.trim() ? tf("nameError") : null;
+  const phoneError = touched && !normalizePhone(phone) ? tf("phoneError") : null;
+  const consentOk = consent.privacy && consent.age14;
+
+  // 서버 응답 처리: 완료 → 행동 데이터, 실패 → 토스트
+  const lastState = useRef(state);
   useEffect(() => {
+    if (state === lastState.current) return;
+    lastState.current = state;
     if (state.status === "done") {
       track("reservation_submit", {
         artisan: state.slot.artisanSlug,
         props: { slot: state.slot.id, party: state.partySize },
       });
+    } else if (state.status === "error") {
+      toast(t(`error${state.error}`), "error");
     }
-  }, [state]);
+  }, [state, t, toast]);
 
+  // ── 완료 화면 ───────────────────────────────────────────
   if (state.status === "done") {
-    const who = artisans.find((a) => a.slug === state.slot.artisanSlug)?.label ?? "";
+    const who = artisans.find((a) => a.slug === state.slot.artisanSlug);
     return (
-      <div role="status" className="flex flex-col gap-5">
-        <div className="flex flex-col gap-2 rounded-card bg-hanji p-5">
-          <p className="font-serif text-heading font-semibold">{t("doneTitle")}</p>
-          <p className="text-body text-mukhoe">{t("doneBody")}</p>
+      <>
+        <AppHeader backHref="/" title={tn("title")} />
+        <div role="status" className="flex flex-col gap-6 px-gutter pt-10 pb-10">
+          <span
+            aria-hidden
+            className="flex size-14 items-center justify-center rounded-full bg-meok text-2xl text-baekja"
+          >
+            ✓
+          </span>
+          <div className="flex flex-col gap-2">
+            <h1 className="font-serif text-heading font-semibold">{t("doneTitle")}</h1>
+            <p className="text-body text-mukhoe">{t("doneBody")}</p>
+          </div>
+          <dl className="grid grid-cols-[auto_1fr] gap-x-5 gap-y-3 rounded-card bg-hanji p-5 text-body">
+            <dt className="text-mukhoe">{t("summaryArtisan")}</dt>
+            <dd className="font-bold">{who ? `${who.name} · ${who.craft}` : ""}</dd>
+            <dt className="text-mukhoe">{t("summaryWhen")}</dt>
+            <dd className="font-bold">{whenOf(state.slot)}</dd>
+            <dt className="text-mukhoe">{t("summaryParty")}</dt>
+            <dd className="font-bold">{t("people", { n: state.partySize })}</dd>
+          </dl>
+          <p className="text-label text-mukhoe">{tf("demoNotice")}</p>
+          <TextLink href="/artisans" className="self-start">
+            {t("doneAnother")}
+          </TextLink>
         </div>
-        <dl className="grid grid-cols-[auto_1fr] gap-x-5 gap-y-3 border-y border-jae py-4 text-body">
-          <dt className="text-mukhoe">{t("summaryArtisan")}</dt>
-          <dd className="font-medium">{who}</dd>
-          <dt className="text-mukhoe">{t("summaryWhen")}</dt>
-          <dd className="font-medium">
-            {fmtDate.format(new Date(`${state.slot.date}T00:00:00Z`))} {state.slot.time}
-          </dd>
-          <dt className="text-mukhoe">{t("summaryParty")}</dt>
-          <dd className="font-medium">{t("people", { n: state.partySize })}</dd>
-        </dl>
-        <p className="text-label text-mukhoe">{tf("demoNotice")}</p>
-        <TextLink href="/artisans" className="self-start">
-          {t("doneAnother")}
-        </TextLink>
-      </div>
+      </>
     );
   }
 
-  const selectArtisan = (slug: string) => {
-    setPickedArtisan(slug);
-    setDate(null);
-    setSlotId(null);
+  const titles: Record<Step, string> = {
+    1: t("step1"),
+    2: t("step2"),
+    3: t("step3"),
+    4: t("step4"),
   };
+  const canGoBack = step > firstStep;
 
   return (
-    <form action={formAction} noValidate className="flex flex-col gap-8">
-      <input type="hidden" name="slotId" value={slotId ?? ""} />
-      <input type="hidden" name="partySize" value={party} />
-      <input type="hidden" name="locale" value={locale} />
-      <SessionField />
+    <>
+      <AppHeader backHref="/" onBack={canGoBack ? back : undefined} title={tn("title")} />
 
-      <Step n={1} title={t("artisan")}>
-        <div className="flex flex-wrap gap-2.5">
-          {artisans.map((a) => (
-            <button
-              key={a.slug}
-              type="button"
-              onClick={() => selectArtisan(a.slug)}
-              aria-pressed={a.slug === artisan}
-              className={`h-12 rounded-btn border px-5 text-sm font-medium ${
-                a.slug === artisan
-                  ? "border-meok bg-meok text-baekja"
-                  : "border-jae text-meok"
-              }`}
-            >
-              {a.label}
-            </button>
-          ))}
-        </div>
-      </Step>
-
-      <Step n={2} title={t("date")} hint={t("weekdayRule")}>
-        {availability.size ? (
-          <ReservationCalendar
-            key={artisan}
-            availability={availability}
-            selected={date}
-            onSelect={(d) => {
-              setDate(d);
-              setSlotId(null);
-            }}
-          />
-        ) : (
-          <p className="rounded-card bg-hanji p-4 text-body text-mukhoe">
-            {t("noSlots")}
-          </p>
-        )}
-      </Step>
-
-      <Step n={3} title={t("time")}>
-        {!date ? (
-          <p className="text-caption text-mukhoe">{t("selectDateFirst")}</p>
-        ) : (
-          <div className="grid grid-cols-2 gap-2.5">
-            {daySlots.map((s) => {
-              const full = s.remaining === 0;
-              const active = s.id === slotId;
-              return (
-                <button
-                  key={s.id}
-                  type="button"
-                  disabled={full}
-                  onClick={() => {
-                    setSlotId(s.id);
-                    setParty((p) =>
-                      Math.min(p, Math.max(1, Math.min(maxPartySize, s.remaining))),
-                    );
-                  }}
-                  aria-pressed={active}
-                  className={`flex h-16 flex-col items-center justify-center gap-0.5 rounded-btn border ${
-                    active
-                      ? "border-meok bg-meok text-baekja"
-                      : full
-                        ? "border-jae bg-hanji text-disabled-ink"
-                        : "border-jae text-meok"
-                  }`}
-                >
-                  <span className="font-en text-xl leading-none lining-nums tabular-nums">
-                    {s.time}
-                  </span>
-                  <span className="text-[11px]">
-                    {full
-                      ? t("closed")
-                      : t("slot", { remaining: s.remaining, capacity: s.capacity })}
-                    {" · "}
-                    {t("duration", { h: s.durationMin / 60 })}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        )}
-      </Step>
-
-      <Step n={4} title={t("party")} hint={t("partyMax", { n: maxPartySize })}>
-        <div className="flex w-fit items-center overflow-hidden rounded-btn border border-meok">
-          <button
-            type="button"
-            onClick={() => setParty((p) => Math.max(1, p - 1))}
-            disabled={party <= 1}
-            aria-label={t("decrease")}
-            className="flex size-12 items-center justify-center text-xl disabled:text-jae"
-          >
-            −
-          </button>
-          <output
-            aria-live="polite"
-            className="min-w-16 text-center font-en text-xl lining-nums tabular-nums"
-          >
-            {party}
-          </output>
-          <button
-            type="button"
-            onClick={() => setParty((p) => Math.min(partyMax, p + 1))}
-            disabled={party >= partyMax}
-            aria-label={t("increase")}
-            className="flex size-12 items-center justify-center text-xl disabled:text-jae"
-          >
-            +
-          </button>
-        </div>
-      </Step>
-
-      <Step n={5} title={t("info")}>
-        <div className="flex flex-col gap-5">
-          <Field label={tf("name")} required>
-            {(id) => (
-              <TextInput
-                id={id}
-                name="name"
-                autoComplete="name"
-                required
-                maxLength={50}
-                placeholder={tf("namePlaceholder")}
-              />
-            )}
-          </Field>
-          <Field label={tf("phone")} required>
-            {(id) => (
-              <TextInput
-                id={id}
-                name="phone"
-                type="tel"
-                inputMode="tel"
-                autoComplete="tel"
-                required
-                maxLength={25}
-                placeholder={tf("phonePlaceholder")}
-              />
-            )}
-          </Field>
-          <Field label={tf("message")}>
-            {(id) => (
-              <>
-                <TextArea id={id} name="message" rows={3} maxLength={500} />
-                <span className="text-label text-mukhoe">{t("messageHint")}</span>
-              </>
-            )}
-          </Field>
-          <input
-            type="text"
-            name="website"
-            tabIndex={-1}
-            autoComplete="off"
-            className="hidden"
-            aria-hidden
-          />
-          <ConsentBox kind="reserve" />
-        </div>
-      </Step>
-
-      {state.status === "error" && (
-        <p role="alert" className="text-caption font-bold text-onggi">
-          {t(`error${state.error}`)}
-        </p>
-      )}
-
-      <div className="flex flex-col gap-3">
-        <button
-          type="submit"
-          disabled={!slotId || pending}
-          className={`${button.base} ${slotId && !pending ? button.solid : button.disabled}`}
-        >
-          {pending ? t("submitting") : t("submit")}
-        </button>
-        <p className="text-label text-mukhoe">{tf("demoNotice")}</p>
+      <div
+        role="progressbar"
+        aria-label={t("progress", { n: step, total: TOTAL })}
+        aria-valuemin={1}
+        aria-valuemax={TOTAL}
+        aria-valuenow={step}
+        className="h-[3px] bg-jae"
+      >
+        <div
+          className="h-full bg-meok transition-[width] duration-300"
+          style={{ width: `${(step / TOTAL) * 100}%` }}
+        />
       </div>
-    </form>
+
+      <form
+        action={formAction}
+        noValidate
+        onSubmit={(e) => {
+          if (!name.trim() || !normalizePhone(phone) || !consentOk) {
+            e.preventDefault();
+            setTouched(true);
+          }
+        }}
+        className="flex flex-col px-gutter pt-7"
+      >
+        <input type="hidden" name="slotId" value={slotId ?? ""} />
+        <input type="hidden" name="partySize" value={party} />
+        <input type="hidden" name="locale" value={locale} />
+        <SessionField />
+
+        <p className="font-en text-sm text-mukhoe lining-nums">
+          {step} / {TOTAL}
+        </p>
+        <h1 className="mt-1 font-serif text-heading font-semibold">{titles[step]}</h1>
+
+        {/* 앞 단계에서 고른 것 — 눌러서 바로 변경 */}
+        {step > 1 && (
+          <ul className="mt-5 flex flex-col border-y border-jae">
+            {selectedArtisan && (
+              <Summary
+                label={t("summaryArtisan")}
+                value={`${selectedArtisan.name} · ${selectedArtisan.craft}`}
+                edit={t("edit")}
+                onEdit={() => goTo(1)}
+              />
+            )}
+            {step > 2 && slot && (
+              <Summary
+                label={t("summaryWhen")}
+                value={whenOf(slot)}
+                edit={t("edit")}
+                onEdit={() => goTo(2)}
+              />
+            )}
+            {step > 3 && (
+              <Summary
+                label={t("summaryParty")}
+                value={t("people", { n: party })}
+                edit={t("edit")}
+                onEdit={() => goTo(3)}
+              />
+            )}
+          </ul>
+        )}
+
+        <div className="mt-6">
+          {step === 1 && (
+            <ul className="flex flex-col border-t border-jae">
+              {artisans.map((a) => (
+                <li key={a.slug}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (a.slug !== artisan) {
+                        setDate(null);
+                        setSlotId(null);
+                      }
+                      setPickedArtisan(a.slug);
+                      goTo(2);
+                    }}
+                    className="tap-row flex min-h-[72px] w-full items-center gap-4 border-b border-jae text-left"
+                  >
+                    <span className="flex flex-1 flex-col gap-0.5">
+                      <span className="font-serif text-lg font-semibold">{a.name}</span>
+                      <span className="text-caption text-mukhoe">{a.craft}</span>
+                    </span>
+                    <ChevronRight
+                      size={20}
+                      strokeWidth={1.5}
+                      className="text-mukhoe"
+                      aria-hidden
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {step === 2 && (
+            <div className="flex flex-col gap-6">
+              <p className="-mt-2 text-label text-mukhoe">{t("weekdayRule")}</p>
+              {availability.size ? (
+                <ReservationCalendar
+                  key={artisan}
+                  availability={availability}
+                  selected={date}
+                  onSelect={(d) => {
+                    setDate(d);
+                    setSlotId(null);
+                  }}
+                />
+              ) : (
+                <p className="rounded-card bg-hanji p-4 text-body text-mukhoe">
+                  {t("noSlots")}
+                </p>
+              )}
+              {date && (
+                <section className="flex flex-col gap-3">
+                  <h2 className="text-[15px] font-bold">{t("timeTitle")}</h2>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    {daySlots.map((s) => {
+                      const full = s.remaining === 0;
+                      const active = s.id === slotId;
+                      return (
+                        <button
+                          key={s.id}
+                          type="button"
+                          disabled={full}
+                          onClick={() => {
+                            setSlotId(s.id);
+                            setParty((p) =>
+                              Math.min(
+                                p,
+                                Math.max(1, Math.min(maxPartySize, s.remaining)),
+                              ),
+                            );
+                          }}
+                          aria-pressed={active}
+                          className={`tap flex h-[68px] flex-col items-center justify-center gap-1 rounded-btn border ${
+                            active
+                              ? "border-meok bg-meok text-baekja"
+                              : full
+                                ? "border-jae bg-hanji text-disabled-ink"
+                                : "border-jae text-meok"
+                          }`}
+                        >
+                          <span className="font-en text-xl leading-none lining-nums">
+                            {s.time}
+                          </span>
+                          <span className="text-[12px]">
+                            {full
+                              ? t("closed")
+                              : t("slot", {
+                                  remaining: s.remaining,
+                                  capacity: s.capacity,
+                                })}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
+              )}
+            </div>
+          )}
+
+          {step === 3 && (
+            <div className="flex flex-col items-center gap-4 py-6">
+              <div className="flex items-center gap-6">
+                <StepperButton
+                  label={t("decrease")}
+                  disabled={party <= 1}
+                  onClick={() => setParty((p) => Math.max(1, p - 1))}
+                >
+                  −
+                </StepperButton>
+                <output
+                  aria-live="polite"
+                  className="min-w-24 text-center font-en text-6xl leading-none lining-nums"
+                >
+                  {party}
+                </output>
+                <StepperButton
+                  label={t("increase")}
+                  disabled={party >= partyMax}
+                  onClick={() => setParty((p) => Math.min(partyMax, p + 1))}
+                >
+                  +
+                </StepperButton>
+              </div>
+              <p className="text-caption text-mukhoe">
+                {t("partyMax", { n: maxPartySize })}
+              </p>
+            </div>
+          )}
+
+          {step === 4 && (
+            <div className="flex flex-col gap-5">
+              <p className="-mt-2 text-caption text-mukhoe">{t("step4Sub")}</p>
+              <Field label={tf("name")} required error={nameError}>
+                {(id, a11y) => (
+                  <TextInput
+                    id={id}
+                    {...a11y}
+                    name="name"
+                    autoComplete="name"
+                    maxLength={50}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder={tf("namePlaceholder")}
+                  />
+                )}
+              </Field>
+              <Field label={tf("phone")} required error={phoneError}>
+                {(id, a11y) => (
+                  <TextInput
+                    id={id}
+                    {...a11y}
+                    name="phone"
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    maxLength={20}
+                    value={phone}
+                    onChange={(e) => setPhone(formatPhoneInput(e.target.value))}
+                    placeholder={tf("phonePlaceholder")}
+                  />
+                )}
+              </Field>
+              <Field label={tf("message")} hint={t("messageHint")}>
+                {(id, a11y) => (
+                  <TextArea id={id} {...a11y} name="message" rows={3} maxLength={500} />
+                )}
+              </Field>
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden
+              />
+              <ConsentBox
+                kind="reserve"
+                value={consent}
+                onChange={setConsent}
+                showError={touched}
+              />
+              <p className="text-label text-mukhoe">{tf("demoNotice")}</p>
+            </div>
+          )}
+        </div>
+
+        {step > 1 && (
+          <BottomCta>
+            {step < 4 ? (
+              <button
+                type="button"
+                disabled={step === 2 && !slotId}
+                onClick={() => goTo((step + 1) as Step)}
+                className={`${button.base} w-full ${step === 2 && !slotId ? button.disabled : button.solid}`}
+              >
+                {t("next")}
+              </button>
+            ) : (
+              <button
+                type="submit"
+                disabled={pending}
+                className={`${button.base} ${button.solid} w-full`}
+              >
+                {pending ? t("submitting") : t("submit")}
+              </button>
+            )}
+          </BottomCta>
+        )}
+      </form>
+    </>
   );
 }
 
-function Step({
-  n,
-  title,
-  hint,
+function Summary({
+  label,
+  value,
+  edit,
+  onEdit,
+}: {
+  label: string;
+  value: string;
+  edit: string;
+  onEdit: () => void;
+}) {
+  return (
+    <li className="flex min-h-12 items-center gap-3 border-b border-jae text-body last:border-b-0">
+      <span className="w-14 shrink-0 text-label text-mukhoe">{label}</span>
+      <span className="flex-1 truncate font-bold">{value}</span>
+      <button
+        type="button"
+        onClick={onEdit}
+        className="tap flex h-10 items-center px-1 text-label text-nambit underline underline-offset-2"
+      >
+        {edit}
+      </button>
+    </li>
+  );
+}
+
+function StepperButton({
+  label,
+  disabled,
+  onClick,
   children,
 }: {
-  n: number;
-  title: string;
-  hint?: string;
+  label: string;
+  disabled: boolean;
+  onClick: () => void;
   children: React.ReactNode;
 }) {
   return (
-    <section className="flex flex-col gap-3">
-      <div className="flex items-baseline gap-3 border-b border-meok pb-2">
-        <span className="font-en text-lg leading-none text-mukhoe lining-nums tabular-nums">
-          {String(n).padStart(2, "0")}
-        </span>
-        <h2 className="text-[15px] font-bold">{title}</h2>
-        {hint && <span className="ml-auto text-[11px] text-mukhoe">{hint}</span>}
-      </div>
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className="tap flex size-14 items-center justify-center rounded-full border border-meok text-2xl disabled:border-jae disabled:text-jae"
+    >
       {children}
-    </section>
+    </button>
   );
 }
 

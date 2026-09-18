@@ -38,7 +38,7 @@ export default async function SearchPage({
 
   return (
     <>
-      <AppHeader backHref="/" />
+      <AppHeader backHref="/" title={t("title")} />
       <div className="flex flex-col gap-4 px-gutter pt-6 pb-4">
         <form role="search">
           <label className="flex h-[52px] items-center gap-2.5 rounded-btn border border-meok bg-white px-3.5">

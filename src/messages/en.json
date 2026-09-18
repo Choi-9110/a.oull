@@ -12,7 +12,8 @@
   },
   "header": {
     "back": "Back",
-    "language": "Language"
+    "language": "Language",
+    "close": "Close"
   },
   "common": {
     "seeAll": "See all",
@@ -77,7 +78,8 @@
     "aiVoiceDetail": "Recreated with AI from the artisan's own voice",
     "close": "Close",
     "voiceSource": "The artisan's own voice",
-    "badge": "AI audio docent {time}"
+    "badge": "AI audio docent {time}",
+    "languageSheet": "Which language would you like?"
   },
   "cta": {
     "buy": "Shop the work",
@@ -135,9 +137,13 @@
     "privacy": "I agree to the collection and use of personal information (required)",
     "privacyDetail": "Items: name, contact · Purpose: responding to inquiries and bookings · Retention: 1 year after handling",
     "required": "Please fill in the required fields",
-    "submit": "Send",
+    "submit": "Send inquiry",
     "demoNotice": "This is a design preview. Submissions are not actually received.",
-    "success": "Received (demo)"
+    "success": "Received (demo)",
+    "nameError": "Please enter your name",
+    "phoneError": "Please check your phone number",
+    "contactError": "Please enter a phone number or email",
+    "messageError": "Please enter your message"
   },
   "contact": {
     "title": "Contact",
@@ -190,9 +196,18 @@
     "summaryParty": "Guests",
     "errorINVALID": "Please check the required fields and consents",
     "errorPHONE": "Please check your phone number (e.g. 010-1234-5678 or +81…)",
-    "errorSLOT_FULL": "Not enough seats left in this session. Please choose another.",
+    "errorSLOT_FULL": "That session just filled up. Please choose another.",
     "errorSLOT_UNAVAILABLE": "This session cannot be booked. Please choose again.",
-    "weekdayRule": "Saturdays only · no same-day bookings"
+    "weekdayRule": "Saturdays only · no same-day bookings",
+    "step1": "Which artisan would you like to work with?",
+    "step2": "When would you like to come?",
+    "step3": "How many people are coming?",
+    "step4": "Tell us who's booking",
+    "step4Sub": "Used only to confirm your attendance the day before",
+    "next": "Next",
+    "progress": "Step {n} of {total}",
+    "timeTitle": "Time",
+    "edit": "Change"
   },
   "consent": {
     "title": "Consent to collection and use of personal information (required)",
@@ -209,10 +224,16 @@
     "refuseBody": "You may refuse; however, {service} will not be possible without consent.",
     "serviceReserve": "booking",
     "serviceContact": "sending an inquiry",
-    "agree": "I agree to the above",
+    "agree": "I agree",
     "age14": "I am 14 years of age or older",
     "age14Hint": "Under 14? Please ask a parent or guardian to book for you",
-    "policyLink": "Privacy policy"
+    "policyLink": "Privacy policy",
+    "all": "Agree to all",
+    "requiredTag": "[Required]",
+    "privacyRow": "Collection and use of personal information",
+    "view": "View",
+    "hide": "Hide",
+    "error": "Please agree to the required items"
   },
   "privacy": {
     "title": "Privacy Policy",

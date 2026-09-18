@@ -116,7 +116,7 @@ export default async function PrivacyPage({ params }: PageProps<"/[locale]/priva
 
   return (
     <>
-      <AppHeader backHref="/more" />
+      <AppHeader backHref="/more" title={t("title")} />
       <div className="flex flex-col gap-2 px-gutter pt-8 pb-4">
         <p className="font-en text-lg tracking-[0.04em] text-nambit lining-nums">
           Privacy

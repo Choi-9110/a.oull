@@ -50,7 +50,7 @@ export default async function CraftPage({
 
   return (
     <>
-      <AppHeader backHref="/crafts" />
+      <AppHeader backHref="/crafts" title={L(craft.name, locale)} titleOnScroll />
       <PhotoPlaceholder
         label={`${tc("photo")} — 16:10`}
         className="aspect-[16/10] w-full"

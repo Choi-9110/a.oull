@@ -59,7 +59,7 @@ export default async function ArtisanPage({
 
   return (
     <>
-      <AppHeader backHref="/artisans" />
+      <AppHeader backHref="/artisans" title={L(artisan.name, locale)} titleOnScroll />
 
       <PhotoPlaceholder
         label={`${tc("photo")} — 16:10`}

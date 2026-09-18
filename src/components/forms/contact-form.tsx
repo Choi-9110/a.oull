@@ -3,47 +3,81 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { button } from "@/components/ui/primitives";
-import { ConsentBox } from "./consent-box";
-import { Field, TextArea, TextInput } from "./fields";
+import { useToast } from "@/components/ui/toast";
+import { ConsentBox, type ConsentState } from "./consent-box";
+import { BottomCta, Field, TextArea, TextInput } from "./fields";
 
 /**
- * F-07 문의 폼 — 현재는 디자인 확인용(데모). Supabase 연결 시 Server Action으로 inquiries에 저장.
+ * F-07 문의 폼 — TDS 입력 패턴(항목별 즉시 안내, 하단 고정 보내기)
+ * 현재는 디자인 확인용(데모). Supabase 연결 시 Server Action으로 inquiries에 저장.
  */
 export function ContactForm() {
   const t = useTranslations("form");
-  const [state, setState] = useState<"idle" | "error" | "done">("idle");
+  const toast = useToast();
+  const [values, setValues] = useState({ name: "", contact: "", message: "" });
+  const [consent, setConsent] = useState<ConsentState>({ privacy: false, age14: false });
+  const [touched, setTouched] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const errors = {
+    name: touched && !values.name.trim() ? t("nameError") : null,
+    contact: touched && !values.contact.trim() ? t("contactError") : null,
+    message: touched && !values.message.trim() ? t("messageError") : null,
+  };
+  const set = (k: keyof typeof values) => (e: { target: { value: string } }) =>
+    setValues((v) => ({ ...v, [k]: e.target.value }));
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    const ok =
-      ["name", "contact", "message"].every((k) => String(form.get(k) ?? "").trim()) &&
-      form.get("privacy") === "on";
-    setState(ok ? "done" : "error");
+    const ok = Object.values(values).every((v) => v.trim()) && consent.privacy;
+    if (!ok) {
+      setTouched(true);
+      toast(t("required"), "error");
+      return;
+    }
+    setDone(true);
   };
 
-  if (state === "done") return <Done message={t("success")} notice={t("demoNotice")} />;
+  if (done) return <Done message={t("success")} notice={t("demoNotice")} />;
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
-      <Field label={t("name")} required>
-        {(id) => (
+      <Field label={t("name")} required error={errors.name}>
+        {(id, a11y) => (
           <TextInput
             id={id}
+            {...a11y}
             name="name"
             autoComplete="name"
+            value={values.name}
+            onChange={set("name")}
             placeholder={t("namePlaceholder")}
           />
         )}
       </Field>
-      <Field label={t("contact")} required>
-        {(id) => (
-          <TextInput id={id} name="contact" placeholder={t("contactPlaceholder")} />
+      <Field label={t("contact")} required error={errors.contact}>
+        {(id, a11y) => (
+          <TextInput
+            id={id}
+            {...a11y}
+            name="contact"
+            autoComplete="email"
+            value={values.contact}
+            onChange={set("contact")}
+            placeholder={t("contactPlaceholder")}
+          />
         )}
       </Field>
-      <Field label={t("message")} required>
-        {(id) => (
-          <TextArea id={id} name="message" placeholder={t("messagePlaceholder")} />
+      <Field label={t("message")} required error={errors.message}>
+        {(id, a11y) => (
+          <TextArea
+            id={id}
+            {...a11y}
+            name="message"
+            value={values.message}
+            onChange={set("message")}
+            placeholder={t("messagePlaceholder")}
+          />
         )}
       </Field>
       {/* 스팸 방지 honeypot */}
@@ -55,16 +89,18 @@ export function ContactForm() {
         className="hidden"
         aria-hidden
       />
-      <ConsentBox kind="contact" />
-      {state === "error" && (
-        <p role="alert" className="text-caption font-bold text-onggi">
-          {t("required")}
-        </p>
-      )}
-      <button type="submit" className={`${button.base} ${button.solid}`}>
-        {t("submit")}
-      </button>
+      <ConsentBox
+        kind="contact"
+        value={consent}
+        onChange={setConsent}
+        showError={touched}
+      />
       <p className="text-label text-mukhoe">{t("demoNotice")}</p>
+      <BottomCta>
+        <button type="submit" className={`${button.base} ${button.solid} w-full`}>
+          {t("submit")}
+        </button>
+      </BottomCta>
     </form>
   );
 }
