@@ -1,19 +1,56 @@
-/* A.OULL 디자인 토큰 (초안) — 사업설명회 포스터 톤 기준. 확정 시 ag_dev_web-designer가 갱신 */
+/*
+ * A.OULL 디자인 토큰 — Claude Design "A.OULL 브랜드 키트" (05 토큰 · 개발 인계) 기준
+ * https://claude.ai/artifact/BZwcPN8Yx51W6EU4YYeXys
+ * 규칙: 백자 77% · 먹 14% · 한지 6% · 청자+옹기 ≤3%. 그림자 없음(하단 CTA 바만 예외).
+ */
 :root {
-  --bg: #f7f4e9; /* 크림 */
-  --bg-outer: #ece8da; /* 데스크톱에서 모바일 셸 바깥 배경 */
-  --fg: #1c2440; /* 딥 네이비 */
-  --muted: #6b6f7d;
-  --line: #ddd8c6;
-  --accent: #6cc2a5; /* 세이지/민트 포인트 */
-  --lacquer: #2b211c; /* 옻칠 흑갈색 */
-  --brass: #b08d57; /* 두석 황동 */
+  /* ground */
+  --baekja: #f7f5ef; /* 배경 */
+  --hanji: #ede9df; /* 카드 · 섹션면 (그림자 대신 층) */
+  --jae: #d8d3c7; /* 보더 1px · 비활성 · 사진 자리 */
+  --onggi-pale: #f0e3db; /* 전환(CTA) 영역 배경 — 한 화면에 한 번 */
 
+  /* ink */
+  --meok: #16283c; /* 본문 · 제목 · 아웃라인 버튼 */
+  --nambit: #2e4a63; /* 링크 · 인용 · 호버 */
+  --mukhoe: #5f5e57; /* 캡션 — 이보다 밝은 회색 금지 */
+  --disabled-ink: #9c978b; /* 비활성 버튼 글자 전용 */
+
+  /* accent */
+  --cheongja: #6e9e8b; /* 면 · 그래픽 전용 (글자 금지) */
+  --cheongja-deep: #3f6b5b; /* 도슨트 재생 상태 · 진행바 */
+  --onggi: #a85639; /* 구매 CTA 단 하나 */
+  --onggi-hover: #8e4529;
+
+  /* radius */
+  --r-btn: 2px;
+  --r-card: 4px;
+
+  /* layout */
   --shell-max-width: 480px;
-  --tabbar-height: 64px;
+  --gutter: 20px;
+  --header-height: 58px;
+  --tabbar-height: 60px;
+  --cta-height: 76px;
 
+  /* type — 언어별 폰트는 아래 lang 규칙에서 교체 */
+  --font-serif-stack: var(--font-noto-serif-kr), "Noto Serif KR", serif;
   --font-sans-stack:
-    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
-    "Apple SD Gothic Neo", "Hiragino Sans", "PingFang SC", "Noto Sans KR", "Noto Sans JP",
-    "Noto Sans SC", sans-serif;
+    var(--font-noto-sans-kr), "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --font-en-stack: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --leading-read: 1.85;
+}
+
+html[lang="ja"] {
+  --font-serif-stack:
+    var(--font-noto-serif-jp), "Noto Serif JP", "Hiragino Mincho ProN", serif;
+  --font-sans-stack:
+    var(--font-noto-sans-jp), "Noto Sans JP", "Hiragino Sans", sans-serif;
+  --leading-read: 1.9;
+}
+
+html[lang="zh"] {
+  --font-serif-stack: var(--font-noto-serif-sc), "Noto Serif SC", "Songti SC", serif;
+  --font-sans-stack: var(--font-noto-sans-sc), "Noto Sans SC", "PingFang SC", sans-serif;
+  --leading-read: 1.9;
 }

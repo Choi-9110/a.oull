@@ -5,15 +5,17 @@ import { supabaseUrl } from "@/lib/supabase/env";
  * DB에는 storage_path만 저장하므로 드라이버 교체(supabase ↔ r2)는 환경변수 변경만으로 끝난다.
  * docs/storage-decision.md 참고.
  */
-export type StorageDriver = "supabase" | "r2";
+/** local = public/ 폴더 (목업 데이터 개발용) */
+export type StorageDriver = "local" | "supabase" | "r2";
 
 export const MEDIA_BUCKET = "media";
 
-const driver = (process.env.NEXT_PUBLIC_STORAGE_DRIVER ?? "supabase") as StorageDriver;
+const driver = (process.env.NEXT_PUBLIC_STORAGE_DRIVER ?? "local") as StorageDriver;
 const r2PublicBaseUrl = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? "";
 
 export function getPublicUrl(storagePath: string): string {
   const path = storagePath.replace(/^\/+/, "");
+  if (driver === "local") return `/${path}`;
   if (driver === "r2") return `${r2PublicBaseUrl.replace(/\/+$/, "")}/${path}`;
   return `${supabaseUrl}/storage/v1/object/public/${MEDIA_BUCKET}/${path}`;
 }

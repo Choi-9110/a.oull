@@ -151,7 +151,7 @@ aoull/
 ## 9. 명령어
 
 ```bash
-pnpm dev              # 로컬 개발 (http://localhost:3000 → /ko)
+pnpm dev              # 로컬 개발 (http://localhost:3100 → /ko, 3000은 다른 프로젝트가 사용)
 pnpm build            # 프로덕션 빌드
 pnpm lint             # eslint
 pnpm typecheck        # next typegen + tsc (PageProps 등 전역 타입 생성 포함)

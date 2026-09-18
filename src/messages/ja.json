@@ -10,29 +10,154 @@
     "magazine": "マガジン",
     "more": "その他"
   },
+  "header": {
+    "back": "戻る",
+    "language": "言語"
+  },
+  "common": {
+    "seeAll": "すべて見る",
+    "recruiting": "職人募集中",
+    "minutes": "{n}分",
+    "readMore": "詳しく見る",
+    "comingSoon": "準備中です",
+    "sampleNotice": "現在の文言と画像はサンプルです",
+    "photo": "職人の作業写真",
+    "otherArtisans": "ほかの職人を見る"
+  },
   "home": {
-    "searchPlaceholder": "工芸・職人・地域を検索",
-    "sections": {
-      "crafts": "伝統工芸8種",
-      "artisans": "職人紹介",
-      "regions": "地域",
-      "magazine": "マガジン",
-      "about": "A.OULLについて",
-      "contact": "お問い合わせ",
-      "apply": "体験申込"
-    }
+    "heroEyebrow": "統営伝統工芸館",
+    "heroTitle": "手が覚えている四百年、\nその声を聴く",
+    "heroBody": "消えゆく伝統工芸の職人と共に作るニューリテージ（Newritage）ブランド、A.OULLです。",
+    "heroCta": "職人の話を聴く",
+    "searchPlaceholder": "種目・職人・地域で探す",
+    "artisansTitle": "新たに登録された職人",
+    "craftsTitle": "伝統工芸8種",
+    "craftsSub": "統営と馬山で受け継がれる手の技",
+    "regionsTitle": "工芸の里",
+    "magazineTitle": "マガジン",
+    "aboutEyebrow": "NEWRITAGE",
+    "aboutTitle": "消えゆく手の技を\n今日の品物に",
+    "aboutBody": "A.OULLは職人の物語を記録し、その技で今使える工芸品を作ります。",
+    "aboutCta": "A.OULLについて",
+    "applyCta": "体験申込",
+    "contactCta": "お問い合わせ"
+  },
+  "craft": {
+    "listTitle": "伝統工芸8種",
+    "listSub": "種目を選んで、歴史と技法、職人に出会ってください",
+    "history": "歴史と由来",
+    "technique": "制作技法",
+    "materials": "材料",
+    "artisans": "この工芸の職人",
+    "noArtisan": "この種目の職人を現在募集しています。まもなくお届けします。",
+    "relatedMagazine": "関連マガジン"
+  },
+  "artisan": {
+    "listTitle": "職人",
+    "listSub": "作品の前で、職人の声で",
+    "bio": "略歴",
+    "stories": "制作の物語",
+    "works": "作品",
+    "aboutCraft": "{craft}について",
+    "tracks": "ドーセント{n}件"
   },
   "docent": {
     "tapToListen": "タップして聴く",
+    "qrWelcome": "QRからようこそ",
+    "qrWelcomeBody": "職人の声で作品の物語をお聴きください",
+    "nowPlaying": "再生中",
     "play": "再生",
     "pause": "一時停止",
-    "aiVoice": "AIで生成した音声です"
+    "back10": "10秒戻る",
+    "forward10": "10秒進む",
+    "speed": "再生速度",
+    "language": "ドーセントの言語",
+    "trackList": "ドーセント一覧",
+    "aiVoice": "AIで生成した音声です",
+    "aiVoiceDetail": "職人本人の声をAIで再現して制作しました",
+    "close": "閉じる",
+    "voiceSource": "職人本人の声",
+    "badge": "AI音声ドーセント {time}"
   },
   "cta": {
-    "buy": "購入する",
-    "reserve": "体験を予約"
+    "buy": "作品を購入",
+    "reserve": "体験を予約",
+    "buyUnavailable": "購入準備中"
   },
-  "common": {
-    "comingSoon": "準備中です"
+  "region": {
+    "crafts": "この地域の工芸",
+    "artisans": "この地域の職人"
+  },
+  "magazine": {
+    "title": "マガジン",
+    "sub": "職人と工芸、そしてA.OULLの物語",
+    "relatedArtisan": "この記事の職人",
+    "moreStories": "ほかのストーリー"
+  },
+  "search": {
+    "title": "検索",
+    "results": "「{q}」の検索結果",
+    "empty": "検索結果がありません",
+    "hint": "種目名（例：螺鈿）、職人名、地域名（例：統営）で検索してください",
+    "crafts": "工芸",
+    "artisans": "職人",
+    "regions": "地域"
+  },
+  "more": {
+    "title": "その他",
+    "regions": "地域",
+    "service": "A.OULL",
+    "about": "A.OULLについて",
+    "contact": "お問い合わせ",
+    "apply": "体験申込",
+    "language": "言語設定"
+  },
+  "about": {
+    "title": "A.OULLについて",
+    "eyebrow": "A.OULL",
+    "lead": "消えゆく伝統工芸の職人と協業して作る、ニューリテージ（Newritage）工芸ブランド",
+    "section1Title": "ニューリテージ",
+    "section1Body": "NewとHeritage。古い技を博物館ではなく今日の暮らしへ。職人の技と物語がつながるよう、今使いたい品物として作り直します。",
+    "section2Title": "AIドーセント・プロジェクト",
+    "section2Body": "職人の口述インタビューをもとに、職人の声をAIで再現したドーセントを制作します。韓国語・日本語・中国語で提供し、作品ごとにQRコードを設置します。",
+    "section3Title": "体験と購入へ",
+    "section3Body": "物語を聴いたあとは、工房での体験を予約したり、作品を購入したりできます。"
+  },
+  "form": {
+    "name": "お名前",
+    "namePlaceholder": "山田 花子",
+    "contact": "連絡先またはメール",
+    "contactPlaceholder": "電話番号 / name@example.com",
+    "phone": "連絡先",
+    "phonePlaceholder": "電話番号",
+    "message": "お問い合わせ内容",
+    "messagePlaceholder": "ご質問をご記入ください",
+    "privacy": "個人情報の収集・利用に同意します（必須）",
+    "privacyDetail": "収集項目：氏名、連絡先・目的：お問い合わせ及び予約対応・保有期間：処理完了後1年",
+    "required": "必須項目を入力してください",
+    "submit": "送信",
+    "demoNotice": "現在はデザイン確認用の画面のため、実際には受け付けられません。",
+    "success": "受け付けました（デモ）"
+  },
+  "contact": {
+    "title": "お問い合わせ",
+    "sub": "協業、出店、団体見学など、お気軽にお問い合わせください"
+  },
+  "apply": {
+    "title": "体験申込",
+    "sub": "職人の工房で実際に作ってみましょう",
+    "artisan": "希望の職人／工芸",
+    "artisanPlaceholder": "選択してください",
+    "date": "希望日",
+    "time": "希望時間",
+    "timeMorning": "午前（10:00〜12:00）",
+    "timeAfternoon": "午後（14:00〜17:00）",
+    "people": "人数",
+    "note": "ご要望",
+    "notePlaceholder": "同伴者、年齢など参考事項をご記入ください",
+    "submit": "体験を申し込む"
+  },
+  "footer": {
+    "copyright": "© A.OULL. All rights reserved."
   }
 }

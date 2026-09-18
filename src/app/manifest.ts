@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "A.OULL",
     start_url: "/ko",
     display: "standalone",
-    background_color: "#f7f4e9",
-    theme_color: "#f7f4e9",
+    background_color: "#f7f5ef",
+    theme_color: "#f7f5ef",
     icons: [
       { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },

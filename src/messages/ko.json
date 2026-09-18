@@ -10,29 +10,154 @@
     "magazine": "매거진",
     "more": "더보기"
   },
+  "header": {
+    "back": "뒤로",
+    "language": "언어"
+  },
+  "common": {
+    "seeAll": "모두 보기",
+    "recruiting": "장인 섭외 중",
+    "minutes": "{n}분",
+    "readMore": "자세히 보기",
+    "comingSoon": "준비 중입니다",
+    "sampleNotice": "현재 화면의 문구와 이미지는 샘플입니다",
+    "photo": "장인 작업 사진",
+    "otherArtisans": "다른 장인 보기"
+  },
   "home": {
-    "searchPlaceholder": "공예 종목, 장인, 지역 검색",
-    "sections": {
-      "crafts": "전통공예 8종",
-      "artisans": "장인 소개",
-      "regions": "지역",
-      "magazine": "매거진",
-      "about": "아울 소개",
-      "contact": "문의하기",
-      "apply": "체험 신청"
-    }
+    "heroEyebrow": "통영전통공예관",
+    "heroTitle": "손이 기억하는 사백 년,\n그 목소리를 듣습니다",
+    "heroBody": "소멸 위기의 전통공예 장인과 함께 만드는 뉴리티지(Newritage) 브랜드, 아울입니다.",
+    "heroCta": "장인의 이야기 듣기",
+    "searchPlaceholder": "종목 · 장인 · 지역으로 찾기",
+    "artisansTitle": "새로 등록된 장인",
+    "craftsTitle": "전통공예 8종",
+    "craftsSub": "통영과 마산에서 이어지는 손의 기술",
+    "regionsTitle": "공예의 고장",
+    "magazineTitle": "매거진",
+    "aboutEyebrow": "NEWRITAGE",
+    "aboutTitle": "사라져 가는 손의 기술을\n오늘의 물건으로",
+    "aboutBody": "아울은 장인의 이야기를 기록하고, 그 기술로 지금 쓰는 공예품을 만듭니다.",
+    "aboutCta": "아울 소개",
+    "applyCta": "체험 신청",
+    "contactCta": "문의하기"
+  },
+  "craft": {
+    "listTitle": "전통공예 8종",
+    "listSub": "종목을 눌러 역사와 기법, 장인을 만나보세요",
+    "history": "역사와 유래",
+    "technique": "제작 기법",
+    "materials": "재료",
+    "artisans": "이 공예의 장인",
+    "noArtisan": "이 종목의 장인을 섭외하고 있습니다. 곧 이야기를 들려드릴게요.",
+    "relatedMagazine": "관련 매거진"
+  },
+  "artisan": {
+    "listTitle": "장인",
+    "listSub": "작품 앞에서, 장인의 목소리로",
+    "bio": "약력",
+    "stories": "작업 이야기",
+    "works": "작품",
+    "aboutCraft": "{craft} 알아보기",
+    "tracks": "{n}개의 도슨트"
   },
   "docent": {
     "tapToListen": "탭해서 듣기",
+    "qrWelcome": "QR로 찾아오셨네요",
+    "qrWelcomeBody": "장인의 목소리로 작품 이야기를 들어보세요",
+    "nowPlaying": "재생 중",
     "play": "재생",
     "pause": "일시정지",
-    "aiVoice": "AI로 생성한 음성입니다"
+    "back10": "10초 뒤로",
+    "forward10": "10초 앞으로",
+    "speed": "재생 속도",
+    "language": "도슨트 언어",
+    "trackList": "도슨트 목록",
+    "aiVoice": "AI로 생성한 음성입니다",
+    "aiVoiceDetail": "장인의 실제 목소리를 AI로 복제해 만들었습니다",
+    "close": "닫기",
+    "voiceSource": "장인 본인 음성",
+    "badge": "AI 음성 도슨트 {time}"
   },
   "cta": {
-    "buy": "구매하기",
-    "reserve": "체험 예약"
+    "buy": "작품 구하기",
+    "reserve": "체험 예약",
+    "buyUnavailable": "구매 준비 중"
   },
-  "common": {
-    "comingSoon": "준비 중입니다"
+  "region": {
+    "crafts": "이 지역의 공예",
+    "artisans": "이 지역의 장인"
+  },
+  "magazine": {
+    "title": "매거진",
+    "sub": "장인과 공예, 그리고 아울의 이야기",
+    "relatedArtisan": "이 글의 장인",
+    "moreStories": "다른 이야기"
+  },
+  "search": {
+    "title": "검색",
+    "results": "‘{q}’ 검색 결과",
+    "empty": "검색 결과가 없습니다",
+    "hint": "종목명(예: 나전), 장인 이름, 지역명(예: 통영)으로 검색해 보세요",
+    "crafts": "공예",
+    "artisans": "장인",
+    "regions": "지역"
+  },
+  "more": {
+    "title": "더보기",
+    "regions": "지역",
+    "service": "아울",
+    "about": "아울 소개",
+    "contact": "문의하기",
+    "apply": "체험 신청",
+    "language": "언어 설정"
+  },
+  "about": {
+    "title": "아울 소개",
+    "eyebrow": "A.OULL",
+    "lead": "소멸 위기에 있는 전통공예 장인과 협업하여 만드는 뉴리티지(Newritage) 공예품 브랜드",
+    "section1Title": "뉴리티지",
+    "section1Body": "New와 Heritage. 오래된 기술을 박물관이 아닌 오늘의 생활 속으로 가져옵니다. 장인의 기술과 이야기가 이어질 수 있도록, 지금 쓰고 싶은 물건으로 다시 만듭니다.",
+    "section2Title": "AI 도슨트 프로젝트",
+    "section2Body": "장인의 구술 인터뷰를 바탕으로 장인의 목소리를 AI로 복제해 도슨트를 만듭니다. 한국어·일본어·중국어로 제공하며, 작품마다 QR 코드를 설치합니다.",
+    "section3Title": "체험과 구매로",
+    "section3Body": "이야기를 들은 뒤에는 장인의 공방 체험을 예약하거나, 작품을 구매할 수 있습니다."
+  },
+  "form": {
+    "name": "이름",
+    "namePlaceholder": "홍길동",
+    "contact": "연락처 또는 이메일",
+    "contactPlaceholder": "010-0000-0000 / name@example.com",
+    "phone": "연락처",
+    "phonePlaceholder": "010-0000-0000",
+    "message": "문의 내용",
+    "messagePlaceholder": "궁금한 점을 남겨주세요",
+    "privacy": "개인정보 수집·이용에 동의합니다 (필수)",
+    "privacyDetail": "수집 항목: 이름, 연락처 · 목적: 문의 및 예약 응대 · 보유 기간: 처리 완료 후 1년",
+    "required": "필수 항목을 입력해 주세요",
+    "submit": "보내기",
+    "demoNotice": "현재는 디자인 확인용 화면이라 실제로 접수되지 않습니다.",
+    "success": "접수되었습니다 (데모)"
+  },
+  "contact": {
+    "title": "문의하기",
+    "sub": "협업, 입점, 단체 관람 등 무엇이든 문의해 주세요"
+  },
+  "apply": {
+    "title": "체험 신청",
+    "sub": "장인의 공방에서 직접 만들어 보세요",
+    "artisan": "희망 장인 / 공예",
+    "artisanPlaceholder": "선택해 주세요",
+    "date": "희망 날짜",
+    "time": "희망 시간",
+    "timeMorning": "오전 (10:00~12:00)",
+    "timeAfternoon": "오후 (14:00~17:00)",
+    "people": "인원",
+    "note": "요청 사항",
+    "notePlaceholder": "동반 인원, 연령 등 참고할 내용을 적어주세요",
+    "submit": "체험 신청하기"
+  },
+  "footer": {
+    "copyright": "© A.OULL. All rights reserved."
   }
 }

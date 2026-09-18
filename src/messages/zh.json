@@ -10,29 +10,154 @@
     "magazine": "杂志",
     "more": "更多"
   },
+  "header": {
+    "back": "返回",
+    "language": "语言"
+  },
+  "common": {
+    "seeAll": "查看全部",
+    "recruiting": "匠人招募中",
+    "minutes": "{n}分钟",
+    "readMore": "查看详情",
+    "comingSoon": "敬请期待",
+    "sampleNotice": "当前文字与图片为示例",
+    "photo": "匠人工作照片",
+    "otherArtisans": "查看其他匠人"
+  },
   "home": {
-    "searchPlaceholder": "搜索工艺、匠人、地区",
-    "sections": {
-      "crafts": "传统工艺8种",
-      "artisans": "匠人介绍",
-      "regions": "地区",
-      "magazine": "杂志",
-      "about": "关于A.OULL",
-      "contact": "联系我们",
-      "apply": "体验报名"
-    }
+    "heroEyebrow": "统营传统工艺馆",
+    "heroTitle": "手所铭记的四百年，\n聆听那份声音",
+    "heroBody": "A.OULL是与濒危传统工艺匠人共同打造的新遗产（Newritage）品牌。",
+    "heroCta": "聆听匠人的故事",
+    "searchPlaceholder": "按工艺·匠人·地区查找",
+    "artisansTitle": "新登录的匠人",
+    "craftsTitle": "传统工艺8种",
+    "craftsSub": "在统营与马山传承的手艺",
+    "regionsTitle": "工艺之乡",
+    "magazineTitle": "杂志",
+    "aboutEyebrow": "NEWRITAGE",
+    "aboutTitle": "让渐逝的手艺\n成为今天的器物",
+    "aboutBody": "A.OULL记录匠人的故事，并以其技艺制作当下可用的工艺品。",
+    "aboutCta": "关于A.OULL",
+    "applyCta": "体验报名",
+    "contactCta": "联系我们"
+  },
+  "craft": {
+    "listTitle": "传统工艺8种",
+    "listSub": "选择工艺，了解其历史、技法与匠人",
+    "history": "历史与由来",
+    "technique": "制作技法",
+    "materials": "材料",
+    "artisans": "该工艺的匠人",
+    "noArtisan": "我们正在邀请该工艺的匠人，敬请期待。",
+    "relatedMagazine": "相关文章"
+  },
+  "artisan": {
+    "listTitle": "匠人",
+    "listSub": "在作品前，聆听匠人的声音",
+    "bio": "简介",
+    "stories": "创作故事",
+    "works": "作品",
+    "aboutCraft": "了解{craft}",
+    "tracks": "{n}段导览"
   },
   "docent": {
     "tapToListen": "点击收听",
+    "qrWelcome": "欢迎通过二维码来访",
+    "qrWelcomeBody": "请用匠人的声音聆听作品的故事",
+    "nowPlaying": "正在播放",
     "play": "播放",
     "pause": "暂停",
-    "aiVoice": "本语音由AI生成"
+    "back10": "后退10秒",
+    "forward10": "前进10秒",
+    "speed": "播放速度",
+    "language": "导览语言",
+    "trackList": "导览列表",
+    "aiVoice": "本语音由AI生成",
+    "aiVoiceDetail": "以AI复刻匠人本人的声音制作",
+    "close": "关闭",
+    "voiceSource": "匠人本人的声音",
+    "badge": "AI语音导览 {time}"
   },
   "cta": {
-    "buy": "购买",
-    "reserve": "预约体验"
+    "buy": "购买作品",
+    "reserve": "预约体验",
+    "buyUnavailable": "购买准备中"
   },
-  "common": {
-    "comingSoon": "敬请期待"
+  "region": {
+    "crafts": "该地区的工艺",
+    "artisans": "该地区的匠人"
+  },
+  "magazine": {
+    "title": "杂志",
+    "sub": "匠人与工艺，以及A.OULL的故事",
+    "relatedArtisan": "本文的匠人",
+    "moreStories": "更多故事"
+  },
+  "search": {
+    "title": "搜索",
+    "results": "“{q}”的搜索结果",
+    "empty": "没有搜索结果",
+    "hint": "请按工艺名（如：螺钿）、匠人姓名、地区名（如：统营）搜索",
+    "crafts": "工艺",
+    "artisans": "匠人",
+    "regions": "地区"
+  },
+  "more": {
+    "title": "更多",
+    "regions": "地区",
+    "service": "A.OULL",
+    "about": "关于A.OULL",
+    "contact": "联系我们",
+    "apply": "体验报名",
+    "language": "语言设置"
+  },
+  "about": {
+    "title": "关于A.OULL",
+    "eyebrow": "A.OULL",
+    "lead": "与濒危传统工艺匠人合作打造的新遗产（Newritage）工艺品牌",
+    "section1Title": "新遗产",
+    "section1Body": "New与Heritage。让古老的技艺走出博物馆，回到今天的生活。为了让匠人的技艺与故事得以延续，我们将其重新制作为当下想用的器物。",
+    "section2Title": "AI导览项目",
+    "section2Body": "以匠人口述访谈为基础，用AI复刻匠人的声音制作导览。提供韩语、日语、中文三种语言，并为每件作品设置二维码。",
+    "section3Title": "走向体验与购买",
+    "section3Body": "聆听故事后，可以预约匠人工坊体验，或购买作品。"
+  },
+  "form": {
+    "name": "姓名",
+    "namePlaceholder": "张三",
+    "contact": "联系电话或邮箱",
+    "contactPlaceholder": "电话 / name@example.com",
+    "phone": "联系电话",
+    "phonePlaceholder": "电话号码",
+    "message": "咨询内容",
+    "messagePlaceholder": "请留下您的问题",
+    "privacy": "同意收集和使用个人信息（必选）",
+    "privacyDetail": "收集项目：姓名、联系方式 · 目的：咨询及预约回复 · 保存期限：处理完成后1年",
+    "required": "请填写必填项",
+    "submit": "提交",
+    "demoNotice": "当前为设计确认页面，不会实际受理。",
+    "success": "已提交（演示）"
+  },
+  "contact": {
+    "title": "联系我们",
+    "sub": "合作、入驻、团体参观等，欢迎随时咨询"
+  },
+  "apply": {
+    "title": "体验报名",
+    "sub": "在匠人的工坊亲手制作",
+    "artisan": "希望的匠人／工艺",
+    "artisanPlaceholder": "请选择",
+    "date": "希望日期",
+    "time": "希望时间",
+    "timeMorning": "上午（10:00~12:00）",
+    "timeAfternoon": "下午（14:00~17:00）",
+    "people": "人数",
+    "note": "备注",
+    "notePlaceholder": "请填写同行人数、年龄等参考信息",
+    "submit": "提交体验报名"
+  },
+  "footer": {
+    "copyright": "© A.OULL. All rights reserved."
   }
 }

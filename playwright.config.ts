@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const PORT = Number(process.env.PORT ?? 3000);
+const PORT = Number(process.env.PORT ?? 3100);
 
 // 현장 관람객 기준: iPhone Safari(WebKit) + Android Chrome
 export default defineConfig({

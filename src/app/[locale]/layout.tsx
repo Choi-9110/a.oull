@@ -4,6 +4,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { MobileShell } from "@/components/layout/mobile-shell";
+import { fontVariables } from "../fonts";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -15,7 +16,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
   return {
-    title: { default: t("title"), template: `%s · ${t("title")}` },
+    title: { default: t("title"), template: `%s · A.OULL` },
     description: t("description"),
     appleWebApp: { capable: true, title: "A.OULL", statusBarStyle: "default" },
   };
@@ -25,7 +26,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#f7f4e9",
+  themeColor: "#f7f5ef",
 };
 
 export default async function LocaleLayout({
@@ -37,7 +38,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={fontVariables}>
       <body className="antialiased">
         <NextIntlClientProvider>
           <MobileShell>{children}</MobileShell>

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body className="min-h-dvh bg-white text-fg antialiased">{children}</body>
+      <body className="text-fg min-h-dvh bg-white antialiased">{children}</body>
     </html>
   );
 }

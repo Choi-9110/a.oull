@@ -2,15 +2,45 @@
 @import "./tokens.css";
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-fg: var(--fg);
-  --color-muted: var(--muted);
-  --color-line: var(--line);
-  --color-accent: var(--accent);
-  --color-lacquer: var(--lacquer);
-  --color-brass: var(--brass);
+  --color-baekja: var(--baekja);
+  --color-hanji: var(--hanji);
+  --color-jae: var(--jae);
+  --color-onggi-pale: var(--onggi-pale);
+  --color-meok: var(--meok);
+  --color-nambit: var(--nambit);
+  --color-mukhoe: var(--mukhoe);
+  --color-disabled-ink: var(--disabled-ink);
+  --color-cheongja: var(--cheongja);
+  --color-cheongja-deep: var(--cheongja-deep);
+  --color-onggi: var(--onggi);
+  --color-onggi-hover: var(--onggi-hover);
+
+  --font-serif: var(--font-serif-stack);
   --font-sans: var(--font-sans-stack);
+  --font-en: var(--font-en-stack);
+
+  --radius-btn: var(--r-btn);
+  --radius-card: var(--r-card);
+
+  --spacing-gutter: var(--gutter);
+  --spacing-header: var(--header-height);
   --spacing-tabbar: var(--tabbar-height);
+  --spacing-cta: var(--cta-height);
+
+  /* 타입 스케일 (브랜드 키트 02 — 모바일 기준) */
+  --text-display: 32px;
+  --text-display--line-height: 1.3;
+  --text-display--letter-spacing: -0.01em;
+  --text-heading: 22px;
+  --text-heading--line-height: 1.4;
+  --text-body-l: 17px;
+  --text-body-l--line-height: var(--leading-read);
+  --text-body: 15px;
+  --text-body--line-height: 1.7;
+  --text-caption: 13px;
+  --text-caption--line-height: 1.6;
+  --text-label: 12px;
+  --text-label--line-height: 1.4;
 }
 
 html {
@@ -18,9 +48,56 @@ html {
 }
 
 body {
-  background: var(--bg-outer);
-  color: var(--fg);
+  background: var(--hanji);
+  color: var(--meok);
   font-family: var(--font-sans-stack);
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
+}
+
+/* 한글만 어절 단위 줄바꿈. 일본어·중국어는 언어별 기본값 (브랜드 키트 02) */
+html[lang="ko"] body {
+  word-break: keep-all;
+}
+
+:focus-visible {
+  outline: 2px solid var(--meok);
+  outline-offset: 2px;
+}
+
+@layer utilities {
+  /* 워드마크: 자간 0.18em 고정 (브랜드 키트 03) */
+  .wordmark {
+    font-family: var(--font-sans-stack);
+    font-weight: 400;
+    letter-spacing: 0.18em;
+  }
+  /* Label: 12 / 0.18em / 700 */
+  .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--mukhoe);
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
