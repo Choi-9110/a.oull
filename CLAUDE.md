@@ -32,7 +32,7 @@
 
 | 영역 | 선택 | 비고 |
 |---|---|---|
-| 런타임 | Node.js ≥ 20.9 (**22 LTS 권장** — Node 20은 2026-04 EOL) | |
+| 런타임 | Node.js **24 LTS** (`.nvmrc`, nvm-windows로 관리) | Vercel 프로젝트 설정도 Node 24.x |
 | 프레임워크 | Next.js 16 (App Router, Turbopack) + React 19 + TypeScript | RSC, SSG/ISR, Server Actions |
 | 스타일 | Tailwind CSS v4 + shadcn/ui (필요한 것만) | 디자인 토큰은 `src/styles/tokens.css` → `globals.css`의 `@theme` |
 | 다국어 | next-intl v4 | `/[locale]/...` 라우팅, 기본값 `ko`, 설정은 `src/i18n/` |
